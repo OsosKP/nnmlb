@@ -3,8 +3,9 @@ data/
 .DS_STORE
 .vscode/
 __pycache__/
+.idea/
 
 # These either will never be used or will be in the future, but are ignored for now
-scripts/repository.py
+source/scripts/repository.py
 board.ipynb
 board.py

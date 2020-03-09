@@ -1,12 +1,12 @@
 import math
 import numpy as np
 import pandas as pd
-from team_dict import team_dict
-
-# We're going to be reassigning columns, so we'll turn off this warning - we know what we're doing!
+from retroid_dict import get_retroid
+from team_dict import get_team
 pd.options.mode.chained_assignment = None  # default='warn'
 
 df = pd.read_csv('data/lahman/mlb_data/Batting.csv').sort_values('playerID')
+df['playerID'] = df['playerID'].apply(get_retroid)
 df.rename(columns={'playerID': 'retroID'}, inplace=True)
 df['IBB'].fillna(value=0, inplace=True)
 df['SF'].fillna(value=0, inplace=True)
@@ -25,7 +25,7 @@ df['GIDP'].fillna(value=0, inplace=True)
 df['NL'] = pd.get_dummies(df['lgID'], drop_first=True)
 df.drop(columns=['lgID'], inplace=True)
 
-df['teamID'] = df['teamID'].apply(lambda x: team_dict()[x])
+df['teamID'] = df['teamID'].apply(get_team)
 df = df.sort_index()
 df.reset_index(inplace=True)
 
@@ -38,4 +38,5 @@ df = df.groupby('retroID').sum().reset_index()
 df['NL'] = np.where(df['NL'] > 0, 1, 0)
 tensor = df.drop(columns=['retroID'])
 
-tensor.to_csv('./output/tensor.csv')
+tensor.to_csv('output/tensor.csv')
+metadata.to_csv('output/metadata.csv')

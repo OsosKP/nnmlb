@@ -30,12 +30,8 @@ df = df.sort_index()
 df.reset_index(inplace=True)
 
 metadata_column_labels = ['index', 'yearID', 'stint', 'teamID']
-metadata = df[metadata_column_labels].set_index(df['retroID']).reset_index()
-indexer = metadata.drop_duplicates('retroID').set_index(
-    'index').T.to_dict('retroID')[0]
-df = df.drop(columns=metadata_column_labels)
+df.drop(columns=metadata_column_labels, inplace=True)
 df = df.groupby('retroID').sum().reset_index()
 df['NL'] = np.where(df['NL'] > 0, 1, 0)
 
 df.to_csv('output/batting.csv')
-metadata.to_csv('output/metadata.csv')

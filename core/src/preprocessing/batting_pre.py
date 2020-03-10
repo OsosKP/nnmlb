@@ -36,7 +36,6 @@ indexer = metadata.drop_duplicates('retroID').set_index(
 df = df.drop(columns=metadata_column_labels)
 df = df.groupby('retroID').sum().reset_index()
 df['NL'] = np.where(df['NL'] > 0, 1, 0)
-tensor = df.drop(columns=['retroID'])
 
-tensor.to_csv('output/tensor.csv')
+df.to_csv('output/batting.csv')
 metadata.to_csv('output/metadata.csv')

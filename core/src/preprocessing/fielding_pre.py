@@ -1,5 +1,5 @@
 import pandas as pd
-from retroid_dict import get_retroid
+from utils.retroid_dict import get_retroid
 pd.options.mode.chained_assignment = None  # default='warn'
 
 df = pd.read_csv(

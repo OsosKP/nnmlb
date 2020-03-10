@@ -1,8 +1,8 @@
 import math
 import numpy as np
 import pandas as pd
-from retroid_dict import get_retroid
-from team_dict import get_team
+from utils.retroid_dict import get_retroid
+from utils.team_dict import get_team
 pd.options.mode.chained_assignment = None  # default='warn'
 
 df = pd.read_csv('data/lahman/mlb_data/Batting.csv').sort_values('playerID')

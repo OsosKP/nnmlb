@@ -5,7 +5,8 @@ from utils.retroid_dict import get_retroid
 from utils.team_dict import get_team
 pd.options.mode.chained_assignment = None  # default='warn'
 
-df = pd.read_csv('data/lahman/mlb_data/Batting.csv').sort_values('playerID')
+df = pd.read_csv(
+    'core/data/lahman/mlb_data/Batting.csv').sort_values('playerID')
 df['playerID'] = df['playerID'].apply(get_retroid)
 df.rename(columns={'playerID': 'retroID'}, inplace=True)
 df['IBB'].fillna(value=0, inplace=True)
@@ -34,4 +35,4 @@ df.drop(columns=metadata_column_labels, inplace=True)
 df = df.groupby('retroID').sum().reset_index()
 df['NL'] = np.where(df['NL'] > 0, 1, 0)
 
-df.to_csv('output/batting.csv')
+df.to_csv('core/output/batting.csv')

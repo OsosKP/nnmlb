@@ -3,7 +3,7 @@ from utils.retroid_dict import get_retroid
 pd.options.mode.chained_assignment = None  # default='warn'
 
 df = pd.read_csv(
-    'data/lahman/mlb_data/Fielding.csv').sort_values('playerID')
+    'core/data/lahman/mlb_data/Fielding.csv').sort_values('playerID')
 
 df['playerID'] = df['playerID'].apply(get_retroid)
 df.rename(columns={'playerID': 'retroID'}, inplace=True)
@@ -30,5 +30,5 @@ df['E'].fillna(value=0, inplace=True)
 df = df.groupby('retroID').sum().reset_index()
 df_catchers = df_catchers.groupby('retroID').sum().reset_index()
 
-df.to_csv('output/fielding.csv')
-df_catchers.to_csv('output/catching.csv')
+df.to_csv('core/output/fielding.csv')
+df_catchers.to_csv('core/output/catching.csv')

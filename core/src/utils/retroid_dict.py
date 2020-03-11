@@ -1,5 +1,5 @@
 import pandas as pd
-df = pd.read_csv('data/lahman/mlb_data/People.csv')
+df = pd.read_csv('core/data/lahman/mlb_data/People.csv')
 df = df[['playerID', 'retroID']]
 id_dict = df.set_index('playerID').to_dict()['retroID']
 

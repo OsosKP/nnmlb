@@ -5,7 +5,7 @@ from utils.retroid_dict import get_retroid
 
 pd.options.mode.chained_assignment = None  # default='warn'
 
-df = pd.read_csv('data/lahman/mlb_data/Pitching.csv')
+df = pd.read_csv('core/data/lahman/mlb_data/Pitching.csv')
 df['playerID'] = df['playerID'].apply(get_retroid)
 df.rename(columns={'playerID': 'retroID'}, inplace=True)
 
@@ -55,4 +55,4 @@ df_avgs = df_avgs.groupby('retroID').mean().round(4).reset_index()
 df_sums = df_sums.groupby('retroID').sum().reset_index()
 df = pd.merge(df_avgs, df_sums, on='retroID')
 
-df.to_csv('output/pitching.csv')
+df.to_csv('core/output/pitching.csv')

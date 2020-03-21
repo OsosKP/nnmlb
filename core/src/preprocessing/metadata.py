@@ -16,10 +16,10 @@ df2['playerID'] = df2['playerID'].apply(get_retroid)
 df1.rename(columns={'playerID': 'retroID'}, inplace=True)
 df2.rename(columns={'playerID': 'retroID'}, inplace=True)
 
-df1 = df1.groupby('retroID').agg(pd.Series.mode)
+df1 = df1.groupby('retroID').agg(lambda pos: pd.Series.mode(pos)[0])
 
 df1 = df1.reset_index()
 df2 = df2[df2['retroID'].notnull()]
 df = pd.merge(df1, df2, on='retroID')
 
-df.to_csv('core/output/metadata.csv')
+df.to_csv('core/output/metadata.csv', index=False)

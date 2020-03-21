@@ -55,4 +55,4 @@ df_avgs = df_avgs.groupby('retroID').mean().round(4).reset_index()
 df_sums = df_sums.groupby('retroID').sum().reset_index()
 df = pd.merge(df_avgs, df_sums, on='retroID')
 
-df.to_csv('core/output/pitching.csv')
+df.to_csv('core/output/pitching_pre.csv', index=False, float_format='%g')

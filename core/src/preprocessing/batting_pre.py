@@ -35,4 +35,4 @@ df.drop(columns=metadata_column_labels, inplace=True)
 df = df.groupby('retroID').sum().reset_index()
 df['NL'] = np.where(df['NL'] > 0, 1, 0)
 
-df.to_csv('core/output/batting.csv')
+df.to_csv('core/output/batting_pre.csv', index=False, float_format='%g')

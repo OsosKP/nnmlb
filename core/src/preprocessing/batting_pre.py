@@ -28,6 +28,7 @@ df.drop(columns=['lgID'], inplace=True)
 
 df['teamID'] = df['teamID'].apply(get_team)
 df = df.sort_index()
+df.to_csv('core/output/batting.csv')
 df.reset_index(inplace=True)
 
 metadata_column_labels = ['index', 'yearID', 'stint', 'teamID']

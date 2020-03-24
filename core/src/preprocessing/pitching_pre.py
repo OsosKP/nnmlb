@@ -47,6 +47,8 @@ df['ERA'] = df.groupby("retroID")['ERA'].transform(
 df_bfp_missing = df[df['BFP'].isnull()].sort_values('retroID')
 df['BFP'].fillna(df['IPouts'] - df['G'], inplace=True)
 
+df.to_csv('core/output/pitching.csv')
+
 df.drop(columns=['yearID'], inplace=True)
 average_stats = ['BAOpp', 'ERA']
 df_avgs = df[['retroID', 'BAOpp', 'ERA']]

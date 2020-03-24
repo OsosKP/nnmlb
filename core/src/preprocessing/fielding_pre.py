@@ -27,6 +27,10 @@ df = df[df['POS'] != 'C']
 df.drop(columns=['yearID'], inplace=True)
 df_catchers.drop(columns=['yearID'], inplace=True)
 df['E'].fillna(value=0, inplace=True)
+
+df.to_csv('core/output/fielding.csv')
+df_catchers.to_csv('core/output/catching.csv')
+
 df = df.groupby('retroID').sum().reset_index()
 df_catchers = df_catchers.groupby('retroID').sum().reset_index()
 

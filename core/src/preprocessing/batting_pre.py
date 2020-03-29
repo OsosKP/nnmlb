@@ -32,8 +32,15 @@ def find_singles(player):
 
 
 singles = df.apply(find_singles, axis=1)
-df.insert(loc=20, column='1B', value=singles)
+df.insert(loc=8, column='1B', value=singles)
 
+
+def find_pa(player):
+    return int(player['AB'] + player['BB'] + player['HBP'] + player['SF'] + player['SH'])
+
+
+pa_list = df.apply(find_pa, axis=1)
+df.insert(loc=6, column='PA', value=pa_list)
 df['teamID'] = df['teamID'].apply(get_team)
 df = df.sort_index()
 df.to_csv('core/output/batting.csv', index=False, float_format='%g')

@@ -28,8 +28,10 @@ df = pd.merge(df_meta, df_bat, how='inner', on=['retroID'])
 
 df_catch.rename(columns={'CS': 'CS_A', 'SB': 'SB_A'}, inplace=True)
 catchers = pd.merge(df_catch, df, how='inner', on=['retroID'])
-df_without_G = df.drop(columns=['G'])
-
+catchers.drop(columns=['pos_1B', 'pos_2B', 'pos_3B', 'pos_C',
+                       'pos_OF', 'pos_P', 'pos_SS'], inplace=True)
+batting_data_for_pitchers = df.drop(
+    columns=['G', 'pos_1B', 'pos_2B', 'pos_3B', 'pos_C', 'pos_OF', 'pos_P', 'pos_SS'])
 pitching_data_conversion_dict = {
     'BB': 'BB_A',
     'GIDP': 'GIDP_A',
@@ -44,9 +46,14 @@ pitching_data_conversion_dict = {
 }
 
 df_pitch.rename(columns=pitching_data_conversion_dict, inplace=True)
-pitchers = pd.merge(df_pitch, df_without_G, how='inner', on=['retroID'])
-fielders = pd.merge(df_field, df_without_G, how='inner', on=['retroID'])
+pitchers = pd.merge(df_pitch, batting_data_for_pitchers,
+                    how='inner', on=['retroID'])
+fielders = pd.merge(df_field, df, how='inner', on=['retroID'])
+fielders = fielders[~fielders['retroID'].isin(pitchers['retroID'])]
+fielders = fielders[~(fielders['retroID'].isin(
+    catchers['retroID']) & fielders['pos_C'] == 1)]
 
+df.to_csv('core/output/batters.csv', index=False, float_format='%g')
 catchers.to_csv('core/output/catchers.csv', index=False, float_format='%g')
 fielders.to_csv('core/output/fielders.csv', index=False, float_format='%g')
 pitchers.to_csv('core/output/pitchers.csv', index=False, float_format='%g')

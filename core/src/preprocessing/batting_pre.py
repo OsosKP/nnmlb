@@ -26,6 +26,14 @@ df['GIDP'].fillna(value=0, inplace=True)
 df['NL'] = pd.get_dummies(df['lgID'], drop_first=True)
 df.drop(columns=['lgID'], inplace=True)
 
+
+def find_singles(player):
+    return player['H'] - player['2B'] - player['3B'] - player['HR']
+
+
+singles = df.apply(find_singles, axis=1)
+df.insert(loc=20, column='1B', value=singles)
+
 df['teamID'] = df['teamID'].apply(get_team)
 df = df.sort_index()
 df.to_csv('core/output/batting.csv', index=False, float_format='%g')

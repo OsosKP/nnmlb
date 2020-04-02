@@ -1,12 +1,12 @@
 import pandas as pd
 from utils.position_dict import get_pos
 
-df_by_player = pd.read_csv('../core/output/batters.csv')
-df_players = pd.read_csv('../core/output/batting.csv')
-mean_wrc_years = pd.read_csv('../core/output/mean_wrc_by_year.csv')
-mean_woba_years = pd.read_csv('../core/output/mean_woba_by_year.csv')
-df_constants = pd.read_csv('../core/data/FanGraphsConstants.csv')
-df_league = pd.read_csv('../core/data/FanGraphsLeagueAverages.csv')
+df_by_player = pd.read_csv('core/output/batters.csv')
+df_players = pd.read_csv('core/output/batting.csv')
+mean_wrc_years = pd.read_csv('core/output/mean_wrc_by_year.csv')
+mean_woba_years = pd.read_csv('core/output/mean_woba_by_year.csv')
+df_constants = pd.read_csv('core/data/FanGraphsConstants.csv')
+df_league = pd.read_csv('core/data/FanGraphsLeagueAverages.csv')
 
 df_woba = df_constants[['Season', 'wOBA', 'wOBAScale',
                         'wBB', 'wHBP', 'w1B', 'w2B', 'w3B', 'wHR', 'R/PA']]
@@ -218,7 +218,6 @@ def wrc_plus(player, year, park_factor=1):
 def wrc_plus_career(player):
     first_year = player['debutYear'].item()
     last_year = player['finalYear'].item()
-    print('First: {}\nLast: {}'.format(first_year, last_year))
     tenure = last_year - first_year + 1
     wrc_plus_total = 0
     for year in (first_year, last_year):

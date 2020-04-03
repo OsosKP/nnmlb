@@ -1,6 +1,6 @@
 import pandas as pd
 
-df_mlb = pd.read_csv('../core/data/FanGraphsLeagueAverages.csv')
+df_mlb = pd.read_csv('core/data/FanGraphsLeagueAverages.csv')
 df_al = pd.read_csv('core/data/al.csv')
 df_nl = pd.read_csv('core/data/nl.csv')
 df_al = df_al['wRC']

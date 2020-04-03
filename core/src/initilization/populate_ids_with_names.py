@@ -12,4 +12,4 @@ df_names = df_names.dropna()
 
 df_names = df_names.drop_duplicates('retroID', keep='first')
 
-df_names.to_csv('core/data/Names.csv')
+df_names.to_csv('core/data/Names.csv', index=False, float_format='%g')

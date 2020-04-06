@@ -17,7 +17,7 @@ dropped_meta_cols = ['POS', 'bats', 'throws']
 df_meta.drop(columns=dropped_meta_cols, inplace=True)
 
 df_meta = df_meta.join([df_meta_pos, df_meta_bats, df_meta_throws])
-df_meta.drop(columns=['throws_S'], inplace=True)
+df_meta.drop(columns=['throws_S', 'throws_R', 'bats_R'], inplace=True)
 
 scaler = MinMaxScaler()
 

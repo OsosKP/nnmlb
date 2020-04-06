@@ -9,8 +9,6 @@ df['wOBA'].fillna(0, inplace=True)
 df['wRC+'].fillna(0, inplace=True)
 df['WAR'].fillna(0, inplace=True)
 
-df.drop(columns=['Rating'], inplace=True)
-
 df['Batting'] = df[['wOBA', 'wRC+', 'WAR']].mean(axis=1).round(3)
 
 scaler = MinMaxScaler()

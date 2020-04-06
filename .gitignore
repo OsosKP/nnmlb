@@ -4,6 +4,7 @@ data/
 .vscode/
 __pycache__/
 .idea/
+*.csv
 
 # These either will never be used or will be in the future, but are ignored for now
 source/scripts/repository.py

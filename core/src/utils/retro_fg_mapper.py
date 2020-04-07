@@ -1,12 +1,6 @@
 import pandas as pd
 
-df = pd.read_csv('core/data/ChadwickPeople.csv')
-df = df[~df['key_fangraphs'].isnull()]
-df = df[['key_retro', 'key_fangraphs']]
-df['key_fangraphs'] = df['key_fangraphs'].astype(int)
-df.rename(columns={'key_retro': 'retroID',
-                   'key_fangraphs': 'fangraphsID'}, inplace=True)
-df = df.dropna()
+df = pd.read_csv('core/output/retro_fg_ids.csv')
 
 
 def get_fg_id(retro_id):

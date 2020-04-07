@@ -62,4 +62,9 @@ df1 = df1.reset_index()
 df2 = df2[df2['retroID'].notnull()]
 df = pd.merge(df1, df2, on='retroID')
 
+mean_weight = df['weight'].mean()
+mean_height = df['height'].mean()
+df['weight'].fillna(mean_weight, inplace=True)
+df['height'].fillna(mean_height, inplace=True)
+
 df.to_csv('core/output/metadata.csv', index=False)

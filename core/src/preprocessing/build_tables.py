@@ -30,25 +30,9 @@ df_catch.rename(columns={'CS': 'CS_A', 'SB': 'SB_A'}, inplace=True)
 catchers = pd.merge(df_catch, df, how='inner', on=['retroID'])
 catchers.drop(columns=['pos_1B', 'pos_2B', 'pos_3B', 'pos_C',
                        'pos_OF', 'pos_P', 'pos_SS'], inplace=True)
-# batting_data_for_pitchers = df.drop(
-#     columns=['G', 'pos_1B', 'pos_2B', 'pos_3B', 'pos_C', 'pos_OF', 'pos_P', 'pos_SS'])
-# pitching_data_conversion_dict = {
-#     'BB': 'BB_A',
-#     'GIDP': 'GIDP_A',
-#     'H': 'H_A',
-#     'HBP': 'HBP_A',
-#     'HR': 'HR_A',
-#     'IBB': 'IBB_A',
-#     'R': 'R_A',
-#     'SF': 'SF_A',
-#     'SH': 'SH_A',
-#     'SO': 'SO_A'
-# }
-
-# df_pitch.rename(columns=pitching_data_conversion_dict, inplace=True)
-# pitchers = pd.merge(df_pitch, batting_data_for_pitchers,
-#                     how='inner', on=['retroID'])
-pitchers = df_pitch
+unwanted_pitching_columns = ['W', 'L', 'G', 'GS', 'SV']
+pitchers = df_pitch.drop(columns=unwanted_pitching_columns)
+pitchers['K%'] = pitchers['SO'] / pitchers['BFP']
 fielders = pd.merge(df_field, df, how='inner', on=['retroID'])
 fielders = fielders[~fielders['retroID'].isin(pitchers['retroID'])]
 fielders = fielders[~(fielders['retroID'].isin(

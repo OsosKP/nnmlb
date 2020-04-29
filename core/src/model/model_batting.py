@@ -48,7 +48,7 @@ tensor = pd.DataFrame(player_tensor_inputs.values.tolist())
 tensor.to_csv('core/tensors/t_batting.csv', index=False, float_format='%g')
 
 epochs = 400
-batch_size = 128
+batch_size = 64
 loss_param = 'mse'
 optimizer_param = 'adam'
 stop_monitor = 'val_loss'
@@ -56,14 +56,16 @@ stop_patience = 20
 
 model = Sequential()
 
-model.add(Dense(58, activation='relu', kernel_regularizer=regularizers.l2(0.0001)))
-model.add(Dropout(0.5))
-
 model.add(Dense(116, activation='relu',
                 kernel_regularizer=regularizers.l2(0.0001)))
 model.add(Dropout(0.5))
 
-model.add(Dense(58, activation='relu', kernel_regularizer=regularizers.l2(0.0001)))
+model.add(Dense(232, activation='relu',
+                kernel_regularizer=regularizers.l2(0.0001)))
+model.add(Dropout(0.5))
+
+model.add(Dense(116, activation='relu',
+                kernel_regularizer=regularizers.l2(0.0001)))
 model.add(Dropout(0.5))
 
 model.add(Dense(units=1, activation='sigmoid'))
@@ -125,3 +127,5 @@ else:
 
 df_records.to_csv('core/records/batting_results.csv',
                   index=False, float_format='%g')
+
+model.save('core/models/model_batting.h5')

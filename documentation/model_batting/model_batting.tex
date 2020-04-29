@@ -1,0 +1,1524 @@
+\documentclass[11pt]{article}
+
+    \usepackage[breakable]{tcolorbox}
+    \usepackage{parskip} % Stop auto-indenting (to mimic markdown behaviour)
+    
+    \usepackage{iftex}
+    \ifPDFTeX
+    	\usepackage[T1]{fontenc}
+    	\usepackage{mathpazo}
+    \else
+    	\usepackage{fontspec}
+    \fi
+
+    % Basic figure setup, for now with no caption control since it's done
+    % automatically by Pandoc (which extracts ![](path) syntax from Markdown).
+    \usepackage{graphicx}
+    % Maintain compatibility with old templates. Remove in nbconvert 6.0
+    \let\Oldincludegraphics\includegraphics
+    % Ensure that by default, figures have no caption (until we provide a
+    % proper Figure object with a Caption API and a way to capture that
+    % in the conversion process - todo).
+    \usepackage{caption}
+    \DeclareCaptionFormat{nocaption}{}
+    \captionsetup{format=nocaption,aboveskip=0pt,belowskip=0pt}
+
+    \usepackage[Export]{adjustbox} % Used to constrain images to a maximum size
+    \adjustboxset{max size={0.9\linewidth}{0.9\paperheight}}
+    \usepackage{float}
+    \floatplacement{figure}{H} % forces figures to be placed at the correct location
+    \usepackage{xcolor} % Allow colors to be defined
+    \usepackage{enumerate} % Needed for markdown enumerations to work
+    \usepackage{geometry} % Used to adjust the document margins
+    \usepackage{amsmath} % Equations
+    \usepackage{amssymb} % Equations
+    \usepackage{textcomp} % defines textquotesingle
+    % Hack from http://tex.stackexchange.com/a/47451/13684:
+    \AtBeginDocument{%
+        \def\PYZsq{\textquotesingle}% Upright quotes in Pygmentized code
+    }
+    \usepackage{upquote} % Upright quotes for verbatim code
+    \usepackage{eurosym} % defines \euro
+    \usepackage[mathletters]{ucs} % Extended unicode (utf-8) support
+    \usepackage{fancyvrb} % verbatim replacement that allows latex
+    \usepackage{grffile} % extends the file name processing of package graphics 
+                         % to support a larger range
+    \makeatletter % fix for grffile with XeLaTeX
+    \def\Gread@@xetex#1{%
+      \IfFileExists{"\Gin@base".bb}%
+      {\Gread@eps{\Gin@base.bb}}%
+      {\Gread@@xetex@aux#1}%
+    }
+    \makeatother
+
+    % The hyperref package gives us a pdf with properly built
+    % internal navigation ('pdf bookmarks' for the table of contents,
+    % internal cross-reference links, web links for URLs, etc.)
+    \usepackage{hyperref}
+    % The default LaTeX title has an obnoxious amount of whitespace. By default,
+    % titling removes some of it. It also provides customization options.
+    \usepackage{titling}
+    \usepackage{longtable} % longtable support required by pandoc >1.10
+    \usepackage{booktabs}  % table support for pandoc > 1.12.2
+    \usepackage[inline]{enumitem} % IRkernel/repr support (it uses the enumerate* environment)
+    \usepackage[normalem]{ulem} % ulem is needed to support strikethroughs (\sout)
+                                % normalem makes italics be italics, not underlines
+    \usepackage{mathrsfs}
+    
+
+    
+    % Colors for the hyperref package
+    \definecolor{urlcolor}{rgb}{0,.145,.698}
+    \definecolor{linkcolor}{rgb}{.71,0.21,0.01}
+    \definecolor{citecolor}{rgb}{.12,.54,.11}
+
+    % ANSI colors
+    \definecolor{ansi-black}{HTML}{3E424D}
+    \definecolor{ansi-black-intense}{HTML}{282C36}
+    \definecolor{ansi-red}{HTML}{E75C58}
+    \definecolor{ansi-red-intense}{HTML}{B22B31}
+    \definecolor{ansi-green}{HTML}{00A250}
+    \definecolor{ansi-green-intense}{HTML}{007427}
+    \definecolor{ansi-yellow}{HTML}{DDB62B}
+    \definecolor{ansi-yellow-intense}{HTML}{B27D12}
+    \definecolor{ansi-blue}{HTML}{208FFB}
+    \definecolor{ansi-blue-intense}{HTML}{0065CA}
+    \definecolor{ansi-magenta}{HTML}{D160C4}
+    \definecolor{ansi-magenta-intense}{HTML}{A03196}
+    \definecolor{ansi-cyan}{HTML}{60C6C8}
+    \definecolor{ansi-cyan-intense}{HTML}{258F8F}
+    \definecolor{ansi-white}{HTML}{C5C1B4}
+    \definecolor{ansi-white-intense}{HTML}{A1A6B2}
+    \definecolor{ansi-default-inverse-fg}{HTML}{FFFFFF}
+    \definecolor{ansi-default-inverse-bg}{HTML}{000000}
+
+    % commands and environments needed by pandoc snippets
+    % extracted from the output of `pandoc -s`
+    \providecommand{\tightlist}{%
+      \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+    \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+    % Add ',fontsize=\small' for more characters per line
+    \newenvironment{Shaded}{}{}
+    \newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{{#1}}}
+    \newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{{#1}}}}
+    \newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{{#1}}}
+    \newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{{#1}}}
+    \newcommand{\RegionMarkerTok}[1]{{#1}}
+    \newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\NormalTok}[1]{{#1}}
+    
+    % Additional commands for more recent versions of Pandoc
+    \newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{{#1}}}
+    \newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{{#1}}}
+    \newcommand{\ImportTok}[1]{{#1}}
+    \newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{{#1}}}}
+    \newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{{#1}}}
+    \newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{{#1}}}
+    \newcommand{\BuiltInTok}[1]{{#1}}
+    \newcommand{\ExtensionTok}[1]{{#1}}
+    \newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{{#1}}}
+    \newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{{#1}}}
+    \newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    
+    
+    % Define a nice break command that doesn't care if a line doesn't already
+    % exist.
+    \def\br{\hspace*{\fill} \\* }
+    % Math Jax compatibility definitions
+    \def\gt{>}
+    \def\lt{<}
+    \let\Oldtex\TeX
+    \let\Oldlatex\LaTeX
+    \renewcommand{\TeX}{\textrm{\Oldtex}}
+    \renewcommand{\LaTeX}{\textrm{\Oldlatex}}
+    % Document parameters
+    % Document title
+    \title{model\_batting}
+    
+    
+    
+    
+    
+% Pygments definitions
+\makeatletter
+\def\PY@reset{\let\PY@it=\relax \let\PY@bf=\relax%
+    \let\PY@ul=\relax \let\PY@tc=\relax%
+    \let\PY@bc=\relax \let\PY@ff=\relax}
+\def\PY@tok#1{\csname PY@tok@#1\endcsname}
+\def\PY@toks#1+{\ifx\relax#1\empty\else%
+    \PY@tok{#1}\expandafter\PY@toks\fi}
+\def\PY@do#1{\PY@bc{\PY@tc{\PY@ul{%
+    \PY@it{\PY@bf{\PY@ff{#1}}}}}}}
+\def\PY#1#2{\PY@reset\PY@toks#1+\relax+\PY@do{#2}}
+
+\expandafter\def\csname PY@tok@w\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.73,0.73}{##1}}}
+\expandafter\def\csname PY@tok@c\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.74,0.48,0.00}{##1}}}
+\expandafter\def\csname PY@tok@k\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.69,0.00,0.25}{##1}}}
+\expandafter\def\csname PY@tok@o\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ow\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@ne\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.82,0.25,0.23}{##1}}}
+\expandafter\def\csname PY@tok@nv\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@no\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@ni\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.60,0.60,0.60}{##1}}}
+\expandafter\def\csname PY@tok@na\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.49,0.56,0.16}{##1}}}
+\expandafter\def\csname PY@tok@nt\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@s\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sd\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@si\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@se\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sr\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@ss\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sx\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@m\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@gh\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gu\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.50,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gr\endcsname{\def\PY@tc##1{\textcolor[rgb]{1.00,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@ge\endcsname{\let\PY@it=\textit}
+\expandafter\def\csname PY@tok@gs\endcsname{\let\PY@bf=\textbf}
+\expandafter\def\csname PY@tok@gp\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@go\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.53,0.53}{##1}}}
+\expandafter\def\csname PY@tok@gt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.27,0.87}{##1}}}
+\expandafter\def\csname PY@tok@err\endcsname{\def\PY@bc##1{\setlength{\fboxsep}{0pt}\fcolorbox[rgb]{1.00,0.00,0.00}{1,1,1}{\strut ##1}}}
+\expandafter\def\csname PY@tok@kc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kd\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kr\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@bp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@fm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@vc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vg\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sa\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@dl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@s2\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@s1\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@mb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@il\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mo\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ch\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cm\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cpf\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@c1\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cs\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+
+\def\PYZbs{\char`\\}
+\def\PYZus{\char`\_}
+\def\PYZob{\char`\{}
+\def\PYZcb{\char`\}}
+\def\PYZca{\char`\^}
+\def\PYZam{\char`\&}
+\def\PYZlt{\char`\<}
+\def\PYZgt{\char`\>}
+\def\PYZsh{\char`\#}
+\def\PYZpc{\char`\%}
+\def\PYZdl{\char`\$}
+\def\PYZhy{\char`\-}
+\def\PYZsq{\char`\'}
+\def\PYZdq{\char`\"}
+\def\PYZti{\char`\~}
+% for compatibility with earlier versions
+\def\PYZat{@}
+\def\PYZlb{[}
+\def\PYZrb{]}
+\makeatother
+
+
+    % For linebreaks inside Verbatim environment from package fancyvrb. 
+    \makeatletter
+        \newbox\Wrappedcontinuationbox 
+        \newbox\Wrappedvisiblespacebox 
+        \newcommand*\Wrappedvisiblespace {\textcolor{red}{\textvisiblespace}} 
+        \newcommand*\Wrappedcontinuationsymbol {\textcolor{red}{\llap{\tiny$\m@th\hookrightarrow$}}} 
+        \newcommand*\Wrappedcontinuationindent {3ex } 
+        \newcommand*\Wrappedafterbreak {\kern\Wrappedcontinuationindent\copy\Wrappedcontinuationbox} 
+        % Take advantage of the already applied Pygments mark-up to insert 
+        % potential linebreaks for TeX processing. 
+        %        {, <, #, %, $, ' and ": go to next line. 
+        %        _, }, ^, &, >, - and ~: stay at end of broken line. 
+        % Use of \textquotesingle for straight quote. 
+        \newcommand*\Wrappedbreaksatspecials {% 
+            \def\PYGZus{\discretionary{\char`\_}{\Wrappedafterbreak}{\char`\_}}% 
+            \def\PYGZob{\discretionary{}{\Wrappedafterbreak\char`\{}{\char`\{}}% 
+            \def\PYGZcb{\discretionary{\char`\}}{\Wrappedafterbreak}{\char`\}}}% 
+            \def\PYGZca{\discretionary{\char`\^}{\Wrappedafterbreak}{\char`\^}}% 
+            \def\PYGZam{\discretionary{\char`\&}{\Wrappedafterbreak}{\char`\&}}% 
+            \def\PYGZlt{\discretionary{}{\Wrappedafterbreak\char`\<}{\char`\<}}% 
+            \def\PYGZgt{\discretionary{\char`\>}{\Wrappedafterbreak}{\char`\>}}% 
+            \def\PYGZsh{\discretionary{}{\Wrappedafterbreak\char`\#}{\char`\#}}% 
+            \def\PYGZpc{\discretionary{}{\Wrappedafterbreak\char`\%}{\char`\%}}% 
+            \def\PYGZdl{\discretionary{}{\Wrappedafterbreak\char`\$}{\char`\$}}% 
+            \def\PYGZhy{\discretionary{\char`\-}{\Wrappedafterbreak}{\char`\-}}% 
+            \def\PYGZsq{\discretionary{}{\Wrappedafterbreak\textquotesingle}{\textquotesingle}}% 
+            \def\PYGZdq{\discretionary{}{\Wrappedafterbreak\char`\"}{\char`\"}}% 
+            \def\PYGZti{\discretionary{\char`\~}{\Wrappedafterbreak}{\char`\~}}% 
+        } 
+        % Some characters . , ; ? ! / are not pygmentized. 
+        % This macro makes them "active" and they will insert potential linebreaks 
+        \newcommand*\Wrappedbreaksatpunct {% 
+            \lccode`\~`\.\lowercase{\def~}{\discretionary{\hbox{\char`\.}}{\Wrappedafterbreak}{\hbox{\char`\.}}}% 
+            \lccode`\~`\,\lowercase{\def~}{\discretionary{\hbox{\char`\,}}{\Wrappedafterbreak}{\hbox{\char`\,}}}% 
+            \lccode`\~`\;\lowercase{\def~}{\discretionary{\hbox{\char`\;}}{\Wrappedafterbreak}{\hbox{\char`\;}}}% 
+            \lccode`\~`\:\lowercase{\def~}{\discretionary{\hbox{\char`\:}}{\Wrappedafterbreak}{\hbox{\char`\:}}}% 
+            \lccode`\~`\?\lowercase{\def~}{\discretionary{\hbox{\char`\?}}{\Wrappedafterbreak}{\hbox{\char`\?}}}% 
+            \lccode`\~`\!\lowercase{\def~}{\discretionary{\hbox{\char`\!}}{\Wrappedafterbreak}{\hbox{\char`\!}}}% 
+            \lccode`\~`\/\lowercase{\def~}{\discretionary{\hbox{\char`\/}}{\Wrappedafterbreak}{\hbox{\char`\/}}}% 
+            \catcode`\.\active
+            \catcode`\,\active 
+            \catcode`\;\active
+            \catcode`\:\active
+            \catcode`\?\active
+            \catcode`\!\active
+            \catcode`\/\active 
+            \lccode`\~`\~ 	
+        }
+    \makeatother
+
+    \let\OriginalVerbatim=\Verbatim
+    \makeatletter
+    \renewcommand{\Verbatim}[1][1]{%
+        %\parskip\z@skip
+        \sbox\Wrappedcontinuationbox {\Wrappedcontinuationsymbol}%
+        \sbox\Wrappedvisiblespacebox {\FV@SetupFont\Wrappedvisiblespace}%
+        \def\FancyVerbFormatLine ##1{\hsize\linewidth
+            \vtop{\raggedright\hyphenpenalty\z@\exhyphenpenalty\z@
+                \doublehyphendemerits\z@\finalhyphendemerits\z@
+                \strut ##1\strut}%
+        }%
+        % If the linebreak is at a space, the latter will be displayed as visible
+        % space at end of first line, and a continuation symbol starts next line.
+        % Stretch/shrink are however usually zero for typewriter font.
+        \def\FV@Space {%
+            \nobreak\hskip\z@ plus\fontdimen3\font minus\fontdimen4\font
+            \discretionary{\copy\Wrappedvisiblespacebox}{\Wrappedafterbreak}
+            {\kern\fontdimen2\font}%
+        }%
+        
+        % Allow breaks at special characters using \PYG... macros.
+        \Wrappedbreaksatspecials
+        % Breaks at punctuation characters . , ; ? ! and / need catcode=\active 	
+        \OriginalVerbatim[#1,codes*=\Wrappedbreaksatpunct]%
+    }
+    \makeatother
+
+    % Exact colors from NB
+    \definecolor{incolor}{HTML}{303F9F}
+    \definecolor{outcolor}{HTML}{D84315}
+    \definecolor{cellborder}{HTML}{CFCFCF}
+    \definecolor{cellbackground}{HTML}{F7F7F7}
+    
+    % prompt
+    \makeatletter
+    \newcommand{\boxspacing}{\kern\kvtcb@left@rule\kern\kvtcb@boxsep}
+    \makeatother
+    \newcommand{\prompt}[4]{
+        \ttfamily\llap{{\color{#2}[#3]:\hspace{3pt}#4}}\vspace{-\baselineskip}
+    }
+    
+
+    
+    % Prevent overflowing lines due to hard-to-break entities
+    \sloppy 
+    % Setup hyperref package
+    \hypersetup{
+      breaklinks=true,  % so long urls are correctly broken across lines
+      colorlinks=true,
+      urlcolor=urlcolor,
+      linkcolor=linkcolor,
+      citecolor=citecolor,
+      }
+    % Slightly bigger margins than the latex defaults
+    
+    \geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
+    
+    
+
+\begin{document}
+    
+    \maketitle
+    
+    
+
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{1}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{import} \PY{n+nn}{tensorflow} \PY{k}{as} \PY{n+nn}{tf}
+\PY{k+kn}{import} \PY{n+nn}{pandas} \PY{k}{as} \PY{n+nn}{pd}
+\PY{k+kn}{import} \PY{n+nn}{numpy} \PY{k}{as} \PY{n+nn}{np}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{2}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{df} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{read\PYZus{}csv}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{../core/output/batters.csv}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{indexer} \PY{o}{=} \PY{n}{df}\PY{o}{.}\PY{n}{reset\PYZus{}index}\PY{p}{(}\PY{p}{)}\PY{p}{[}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{index}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{retroID}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{]}\PY{o}{.}\PY{n}{to\PYZus{}dict}\PY{p}{(}\PY{p}{)}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{retroID}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+\PY{n}{y} \PY{o}{=} \PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Batting}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{values}
+\PY{n}{to\PYZus{}drop} \PY{o}{=} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{debutYear}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{finalYear}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{G}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{1B}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{AB}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{RBI}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{wOBA}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+\PY{n}{df}\PY{o}{.}\PY{n}{drop}\PY{p}{(}\PY{n}{columns}\PY{o}{=}\PY{n}{to\PYZus{}drop}\PY{p}{,} \PY{n}{inplace}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{3}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{df}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{3}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+        retroID    weight  height  pos\_1B  pos\_2B  pos\_3B  pos\_C  pos\_OF  \textbackslash{}
+0      aardd001  0.569672    0.60       0       0       0      0       0
+1      aaroh101  0.426230    0.45       0       0       0      0       1
+2      aarot101  0.467213    0.60       1       0       0      0       0
+3      aased001  0.467213    0.60       0       0       0      0       0
+4      abada001  0.442623    0.50       1       0       0      0       0
+{\ldots}         {\ldots}       {\ldots}     {\ldots}     {\ldots}     {\ldots}     {\ldots}    {\ldots}     {\ldots}
+15288  zupcb001  0.590164    0.65       0       0       0      0       1
+15289  zupof101  0.434426    0.40       0       0       0      1       0
+15290  zuveg101  0.487705    0.65       0       0       0      0       0
+15291  zuvep001  0.397541    0.45       0       0       0      0       0
+15292  zycht001  0.467213    0.60       0       0       0      0       0
+
+       pos\_P  pos\_SS  {\ldots}    SO  IBB  HBP  SH   SF  GIDP  NL  wRC+    WAR  \textbackslash{}
+0          1       0  {\ldots}     2    0    0   1    0     0   1  -100   -0.1
+1          0       0  {\ldots}  1383  293   32  21  121   328   1   153  136.3
+2          0       0  {\ldots}   145    3    0   9    6    36   1    76   -1.7
+3          1       0  {\ldots}     3    0    0   0    0     0   1  -100   -0.1
+4          0       0  {\ldots}     5    0    0   0    0     1   1     0   -0.4
+{\ldots}      {\ldots}     {\ldots}  {\ldots}   {\ldots}  {\ldots}  {\ldots}  ..  {\ldots}   {\ldots}  ..   {\ldots}    {\ldots}
+15288      0       0  {\ldots}   137    3    6  20    8    15   0    74   -0.9
+15289      0       0  {\ldots}     6    0    0   0    0     0   0    37   -0.2
+15290      1       0  {\ldots}    39    0    0  16    0     3   1     0   -0.3
+15291      0       1  {\ldots}    50    1    2  18    0     8   1    52   -2.2
+15292      1       0  {\ldots}     0    0    0   0    0     0   0     0    0.0
+
+        Batting
+0      0.000358
+1      0.350195
+2      0.157131
+3      0.000358
+4      0.090001
+{\ldots}         {\ldots}
+15288  0.156062
+15289  0.123425
+15290  0.090088
+15291  0.135118
+15292  0.090195
+
+[15293 rows x 31 columns]
+\end{Verbatim}
+\end{tcolorbox}
+        
+    Building the Model
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{4}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{from} \PY{n+nn}{sklearn}\PY{n+nn}{.}\PY{n+nn}{model\PYZus{}selection} \PY{k+kn}{import} \PY{n}{train\PYZus{}test\PYZus{}split}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{5}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{X} \PY{o}{=} \PY{n}{df}\PY{o}{.}\PY{n}{drop}\PY{p}{(}\PY{n}{columns}\PY{o}{=}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Batting}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}\PY{o}{.}\PY{n}{values}
+\PY{n}{y} \PY{o}{=} \PY{n}{df}\PY{p}{[}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{retroID}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Batting}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{]}\PY{o}{.}\PY{n}{values}
+\end{Verbatim}
+\end{tcolorbox}
+
+    When we do our train-test split, since it's random in how it splits up
+the data, we need to keep track of the appropriate keys (retro IDs) for
+each data point.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{6}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{X\PYZus{}train}\PY{p}{,} \PY{n}{X\PYZus{}test}\PY{p}{,} \PY{n}{y\PYZus{}train}\PY{p}{,} \PY{n}{y\PYZus{}test} \PY{o}{=} \PY{n}{train\PYZus{}test\PYZus{}split}\PY{p}{(}\PY{n}{X}\PY{p}{,} \PY{n}{y}\PY{p}{,} \PY{n}{test\PYZus{}size}\PY{o}{=}\PY{l+m+mf}{0.2}\PY{p}{,} \PY{n}{random\PYZus{}state}\PY{o}{=}\PY{l+m+mi}{101}\PY{p}{)}
+\PY{n}{X\PYZus{}train\PYZus{}keys} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{asarray}\PY{p}{(}\PY{p}{[}\PY{n}{x}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]} \PY{k}{for} \PY{n}{x} \PY{o+ow}{in} \PY{n}{X\PYZus{}train}\PY{p}{]}\PY{p}{)}
+\PY{n}{X\PYZus{}train} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{asarray}\PY{p}{(}\PY{p}{[}\PY{n}{x}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{:}\PY{p}{]} \PY{k}{for} \PY{n}{x} \PY{o+ow}{in} \PY{n}{X\PYZus{}train}\PY{p}{]}\PY{p}{)}
+\PY{n}{X\PYZus{}test\PYZus{}keys} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{asarray}\PY{p}{(}\PY{p}{[}\PY{n}{x}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]} \PY{k}{for} \PY{n}{x} \PY{o+ow}{in} \PY{n}{X\PYZus{}test}\PY{p}{]}\PY{p}{)}
+\PY{n}{X\PYZus{}test} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{asarray}\PY{p}{(}\PY{p}{[}\PY{n}{x}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{:}\PY{p}{]} \PY{k}{for} \PY{n}{x} \PY{o+ow}{in} \PY{n}{X\PYZus{}test}\PY{p}{]}\PY{p}{)}
+\PY{n}{y\PYZus{}train\PYZus{}keys} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{asarray}\PY{p}{(}\PY{p}{[}\PY{n}{y}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]} \PY{k}{for} \PY{n}{y} \PY{o+ow}{in} \PY{n}{y\PYZus{}train}\PY{p}{]}\PY{p}{)}
+\PY{n}{y\PYZus{}train} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{asarray}\PY{p}{(}\PY{p}{[}\PY{n}{y}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]} \PY{k}{for} \PY{n}{y} \PY{o+ow}{in} \PY{n}{y\PYZus{}train}\PY{p}{]}\PY{p}{)}
+\PY{n}{y\PYZus{}test\PYZus{}keys} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{asarray}\PY{p}{(}\PY{p}{[}\PY{n}{y}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]} \PY{k}{for} \PY{n}{y} \PY{o+ow}{in} \PY{n}{y\PYZus{}test}\PY{p}{]}\PY{p}{)}
+\PY{n}{y\PYZus{}test} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{asarray}\PY{p}{(}\PY{p}{[}\PY{n}{y}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]} \PY{k}{for} \PY{n}{y} \PY{o+ow}{in} \PY{n}{y\PYZus{}test}\PY{p}{]}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{7}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{import} \PY{n+nn}{tensorflow} \PY{k}{as} \PY{n+nn}{tf}
+\PY{k+kn}{from} \PY{n+nn}{tensorflow}\PY{n+nn}{.}\PY{n+nn}{keras}\PY{n+nn}{.}\PY{n+nn}{models} \PY{k+kn}{import} \PY{n}{Sequential}
+\PY{k+kn}{from} \PY{n+nn}{tensorflow}\PY{n+nn}{.}\PY{n+nn}{keras}\PY{n+nn}{.}\PY{n+nn}{layers} \PY{k+kn}{import} \PY{n}{Dense}\PY{p}{,} \PY{n}{Dropout}
+\PY{k+kn}{from} \PY{n+nn}{tensorflow}\PY{n+nn}{.}\PY{n+nn}{keras} \PY{k+kn}{import} \PY{n}{regularizers}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{8}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{X\PYZus{}train}\PY{o}{.}\PY{n}{shape}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{8}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+(12234, 29)
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{9}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{from} \PY{n+nn}{sklearn}\PY{n+nn}{.}\PY{n+nn}{preprocessing} \PY{k+kn}{import} \PY{n}{MinMaxScaler}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{10}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{scaler} \PY{o}{=} \PY{n}{MinMaxScaler}\PY{p}{(}\PY{p}{)}
+\PY{n}{X\PYZus{}train} \PY{o}{=} \PY{n}{scaler}\PY{o}{.}\PY{n}{fit\PYZus{}transform}\PY{p}{(}\PY{n}{X\PYZus{}train}\PY{p}{)}
+\PY{n}{X\PYZus{}test} \PY{o}{=} \PY{n}{scaler}\PY{o}{.}\PY{n}{transform}\PY{p}{(}\PY{n}{X\PYZus{}test}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{11}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def} \PY{n+nf}{to\PYZus{}tensor\PYZus{}input}\PY{p}{(}\PY{n}{player}\PY{p}{)}\PY{p}{:}
+    \PY{k}{return} \PY{n}{scaler}\PY{o}{.}\PY{n}{transform}\PY{p}{(}\PY{n}{player}\PY{o}{.}\PY{n}{values}\PY{o}{.}\PY{n}{reshape}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{29}\PY{p}{)}\PY{p}{)}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{12}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{tensor} \PY{o}{=} \PY{n}{df}\PY{o}{.}\PY{n}{drop}\PY{p}{(}\PY{n}{columns}\PY{o}{=}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{retroID}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Batting}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+\PY{n}{player\PYZus{}tensor\PYZus{}inputs} \PY{o}{=} \PY{n}{tensor}\PY{o}{.}\PY{n}{apply}\PY{p}{(}\PY{k}{lambda} \PY{n}{player}\PY{p}{:} \PY{n}{to\PYZus{}tensor\PYZus{}input}\PY{p}{(}\PY{n}{player}\PY{p}{)}\PY{p}{,} \PY{n}{axis}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{13}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{player\PYZus{}tensor\PYZus{}inputs}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{13}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+0        [0.5696720000000001, 0.6, 0.0, 0.0, 0.0, 0.0, {\ldots}
+1        [0.42623, 0.45, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, {\ldots}
+2        [0.467213, 0.6, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, {\ldots}
+3        [0.467213, 0.6, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, {\ldots}
+4        [0.44262299999999993, 0.5, 1.0, 0.0, 0.0, 0.0,{\ldots}
+                               {\ldots}
+15288    [0.590164, 0.65, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0,{\ldots}
+15289    [0.43442600000000003, 0.4, 0.0, 0.0, 0.0, 1.0,{\ldots}
+15290    [0.487705, 0.65, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0,{\ldots}
+15291    [0.397541, 0.45, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,{\ldots}
+15292    [0.467213, 0.6, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, {\ldots}
+Length: 15293, dtype: object
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{14}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{tensor} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}\PY{n}{player\PYZus{}tensor\PYZus{}inputs}\PY{o}{.}\PY{n}{values}\PY{o}{.}\PY{n}{tolist}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{15}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{tensor}\PY{o}{.}\PY{n}{to\PYZus{}csv}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{../core/tensors/t\PYZus{}batting.csv}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{index}\PY{o}{=}\PY{k+kc}{False}\PY{p}{,} \PY{n}{float\PYZus{}format}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+si}{\PYZpc{}g}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{27}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{epochs} \PY{o}{=} \PY{l+m+mi}{400}
+\PY{n}{batch\PYZus{}size} \PY{o}{=} \PY{l+m+mi}{64}
+\PY{n}{loss\PYZus{}param} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{mse}\PY{l+s+s1}{\PYZsq{}}
+\PY{n}{optimizer\PYZus{}param} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{adam}\PY{l+s+s1}{\PYZsq{}}
+\PY{n}{stop\PYZus{}monitor} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{val\PYZus{}loss}\PY{l+s+s1}{\PYZsq{}}
+\PY{n}{stop\PYZus{}patience} \PY{o}{=} \PY{l+m+mi}{20}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{28}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{model} \PY{o}{=} \PY{n}{Sequential}\PY{p}{(}\PY{p}{)}
+
+\PY{n}{model}\PY{o}{.}\PY{n}{add}\PY{p}{(}\PY{n}{Dense}\PY{p}{(}\PY{l+m+mi}{116}\PY{p}{,} \PY{n}{activation}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{relu}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{kernel\PYZus{}regularizer}\PY{o}{=}\PY{n}{regularizers}\PY{o}{.}\PY{n}{l2}\PY{p}{(}\PY{l+m+mf}{0.0001}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+\PY{n}{model}\PY{o}{.}\PY{n}{add}\PY{p}{(}\PY{n}{Dropout}\PY{p}{(}\PY{l+m+mf}{0.5}\PY{p}{)}\PY{p}{)}
+
+\PY{n}{model}\PY{o}{.}\PY{n}{add}\PY{p}{(}\PY{n}{Dense}\PY{p}{(}\PY{l+m+mi}{232}\PY{p}{,} \PY{n}{activation}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{relu}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{kernel\PYZus{}regularizer}\PY{o}{=}\PY{n}{regularizers}\PY{o}{.}\PY{n}{l2}\PY{p}{(}\PY{l+m+mf}{0.0001}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+\PY{n}{model}\PY{o}{.}\PY{n}{add}\PY{p}{(}\PY{n}{Dropout}\PY{p}{(}\PY{l+m+mf}{0.5}\PY{p}{)}\PY{p}{)}
+
+\PY{n}{model}\PY{o}{.}\PY{n}{add}\PY{p}{(}\PY{n}{Dense}\PY{p}{(}\PY{l+m+mi}{116}\PY{p}{,} \PY{n}{activation}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{relu}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{kernel\PYZus{}regularizer}\PY{o}{=}\PY{n}{regularizers}\PY{o}{.}\PY{n}{l2}\PY{p}{(}\PY{l+m+mf}{0.0001}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+\PY{n}{model}\PY{o}{.}\PY{n}{add}\PY{p}{(}\PY{n}{Dropout}\PY{p}{(}\PY{l+m+mf}{0.5}\PY{p}{)}\PY{p}{)}
+
+\PY{n}{model}\PY{o}{.}\PY{n}{add}\PY{p}{(}\PY{n}{Dense}\PY{p}{(}\PY{n}{units}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{activation}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{sigmoid}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{)}
+
+\PY{n}{model}\PY{o}{.}\PY{n}{compile}\PY{p}{(}\PY{n}{loss}\PY{o}{=}\PY{n}{loss\PYZus{}param}\PY{p}{,} \PY{n}{optimizer}\PY{o}{=}\PY{n}{optimizer\PYZus{}param}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{19}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{from} \PY{n+nn}{tensorflow}\PY{n+nn}{.}\PY{n+nn}{keras}\PY{n+nn}{.}\PY{n+nn}{callbacks} \PY{k+kn}{import} \PY{n}{EarlyStopping}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{20}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{early\PYZus{}stop} \PY{o}{=} \PY{n}{EarlyStopping}\PY{p}{(}\PY{n}{monitor}\PY{o}{=}\PY{n}{stop\PYZus{}monitor}\PY{p}{,} \PY{n}{patience}\PY{o}{=}\PY{n}{stop\PYZus{}patience}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{29}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{results} \PY{o}{=} \PY{n}{model}\PY{o}{.}\PY{n}{fit}\PY{p}{(}\PY{n}{x}\PY{o}{=}\PY{n}{X\PYZus{}train}\PY{p}{,} \PY{n}{y}\PY{o}{=}\PY{n}{y\PYZus{}train}\PY{p}{,}
+                        \PY{n}{epochs}\PY{o}{=}\PY{n}{epochs}\PY{p}{,}
+                        \PY{n}{batch\PYZus{}size}\PY{o}{=}\PY{n}{batch\PYZus{}size}\PY{p}{,}
+                        \PY{n}{validation\PYZus{}data}\PY{o}{=}\PY{p}{(}\PY{n}{X\PYZus{}test}\PY{p}{,} \PY{n}{y\PYZus{}test}\PY{p}{)}\PY{p}{,}
+                        \PY{n}{callbacks}\PY{o}{=}\PY{p}{[}\PY{n}{early\PYZus{}stop}\PY{p}{]}
+                    \PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Train on 12234 samples, validate on 3059 samples
+Epoch 1/400
+12234/12234 [==============================] - 1s 88us/sample - loss: 0.0339 -
+val\_loss: 0.0177
+Epoch 2/400
+12234/12234 [==============================] - 1s 42us/sample - loss: 0.0144 -
+val\_loss: 0.0089
+Epoch 3/400
+12234/12234 [==============================] - 0s 40us/sample - loss: 0.0082 -
+val\_loss: 0.0050
+Epoch 4/400
+12234/12234 [==============================] - 0s 40us/sample - loss: 0.0053 -
+val\_loss: 0.0033
+Epoch 5/400
+12234/12234 [==============================] - 0s 39us/sample - loss: 0.0039 -
+val\_loss: 0.0026
+Epoch 6/400
+12234/12234 [==============================] - 0s 41us/sample - loss: 0.0032 -
+val\_loss: 0.0020
+Epoch 7/400
+12234/12234 [==============================] - 0s 39us/sample - loss: 0.0029 -
+val\_loss: 0.0018
+Epoch 8/400
+12234/12234 [==============================] - 0s 40us/sample - loss: 0.0026 -
+val\_loss: 0.0016
+Epoch 9/400
+12234/12234 [==============================] - 0s 40us/sample - loss: 0.0025 -
+val\_loss: 0.0017
+Epoch 10/400
+12234/12234 [==============================] - 0s 40us/sample - loss: 0.0024 -
+val\_loss: 0.0015
+Epoch 11/400
+12234/12234 [==============================] - 0s 41us/sample - loss: 0.0023 -
+val\_loss: 0.0015
+Epoch 12/400
+12234/12234 [==============================] - 0s 41us/sample - loss: 0.0022 -
+val\_loss: 0.0014
+Epoch 13/400
+12234/12234 [==============================] - 0s 40us/sample - loss: 0.0022 -
+val\_loss: 0.0014
+Epoch 14/400
+12234/12234 [==============================] - 1s 41us/sample - loss: 0.0022 -
+val\_loss: 0.0013
+Epoch 15/400
+12234/12234 [==============================] - 0s 40us/sample - loss: 0.0022 -
+val\_loss: 0.0013
+Epoch 16/400
+12234/12234 [==============================] - 1s 42us/sample - loss: 0.0021 -
+val\_loss: 0.0015
+Epoch 17/400
+12234/12234 [==============================] - 1s 42us/sample - loss: 0.0021 -
+val\_loss: 0.0014
+Epoch 18/400
+12234/12234 [==============================] - 1s 51us/sample - loss: 0.0020 -
+val\_loss: 0.0013
+Epoch 19/400
+12234/12234 [==============================] - 1s 55us/sample - loss: 0.0020 -
+val\_loss: 0.0013
+Epoch 20/400
+12234/12234 [==============================] - 1s 54us/sample - loss: 0.0019 -
+val\_loss: 0.0013
+Epoch 21/400
+12234/12234 [==============================] - 1s 49us/sample - loss: 0.0019 -
+val\_loss: 0.0013
+Epoch 22/400
+12234/12234 [==============================] - 1s 47us/sample - loss: 0.0019 -
+val\_loss: 0.0012
+Epoch 23/400
+12234/12234 [==============================] - 1s 47us/sample - loss: 0.0019 -
+val\_loss: 0.0013
+Epoch 24/400
+12234/12234 [==============================] - 1s 43us/sample - loss: 0.0019 -
+val\_loss: 0.0012
+Epoch 25/400
+12234/12234 [==============================] - 1s 42us/sample - loss: 0.0018 -
+val\_loss: 0.0012
+Epoch 26/400
+12234/12234 [==============================] - 0s 40us/sample - loss: 0.0018 -
+val\_loss: 0.0012
+Epoch 27/400
+12234/12234 [==============================] - 0s 41us/sample - loss: 0.0018 -
+val\_loss: 0.0013
+Epoch 28/400
+12234/12234 [==============================] - 0s 41us/sample - loss: 0.0018 -
+val\_loss: 0.0013
+Epoch 29/400
+12234/12234 [==============================] - 0s 41us/sample - loss: 0.0018 -
+val\_loss: 0.0012
+Epoch 30/400
+12234/12234 [==============================] - 0s 40us/sample - loss: 0.0018 -
+val\_loss: 0.0012
+Epoch 31/400
+12234/12234 [==============================] - 0s 41us/sample - loss: 0.0017 -
+val\_loss: 0.0012
+Epoch 32/400
+12234/12234 [==============================] - 0s 39us/sample - loss: 0.0017 -
+val\_loss: 0.0011
+Epoch 33/400
+12234/12234 [==============================] - 1s 43us/sample - loss: 0.0017 -
+val\_loss: 0.0012
+Epoch 34/400
+12234/12234 [==============================] - 0s 41us/sample - loss: 0.0017 -
+val\_loss: 0.0012
+Epoch 35/400
+12234/12234 [==============================] - 0s 40us/sample - loss: 0.0017 -
+val\_loss: 0.0012
+Epoch 36/400
+12234/12234 [==============================] - 1s 42us/sample - loss: 0.0017 -
+val\_loss: 0.0012
+Epoch 37/400
+12234/12234 [==============================] - 1s 49us/sample - loss: 0.0016 -
+val\_loss: 0.0013
+Epoch 38/400
+12234/12234 [==============================] - 1s 58us/sample - loss: 0.0016 -
+val\_loss: 0.0012
+Epoch 39/400
+12234/12234 [==============================] - 1s 56us/sample - loss: 0.0017 -
+val\_loss: 0.0013
+Epoch 40/400
+12234/12234 [==============================] - 1s 56us/sample - loss: 0.0017 -
+val\_loss: 0.0011
+Epoch 41/400
+12234/12234 [==============================] - 1s 54us/sample - loss: 0.0016 -
+val\_loss: 0.0012
+Epoch 42/400
+12234/12234 [==============================] - 1s 41us/sample - loss: 0.0017 -
+val\_loss: 0.0018
+Epoch 43/400
+12234/12234 [==============================] - 1s 52us/sample - loss: 0.0016 -
+val\_loss: 0.0012
+Epoch 44/400
+12234/12234 [==============================] - 1s 44us/sample - loss: 0.0016 -
+val\_loss: 0.0011
+Epoch 45/400
+12234/12234 [==============================] - 1s 46us/sample - loss: 0.0016 -
+val\_loss: 0.0011
+Epoch 46/400
+12234/12234 [==============================] - 1s 45us/sample - loss: 0.0016 -
+val\_loss: 0.0012
+Epoch 47/400
+12234/12234 [==============================] - 1s 42us/sample - loss: 0.0016 -
+val\_loss: 0.0011
+Epoch 48/400
+12234/12234 [==============================] - 1s 42us/sample - loss: 0.0017 -
+val\_loss: 0.0011
+Epoch 49/400
+12234/12234 [==============================] - 1s 43us/sample - loss: 0.0016 -
+val\_loss: 0.0011
+Epoch 50/400
+12234/12234 [==============================] - 1s 41us/sample - loss: 0.0016 -
+val\_loss: 0.0011
+Epoch 51/400
+12234/12234 [==============================] - 0s 40us/sample - loss: 0.0016 -
+val\_loss: 0.0013
+Epoch 52/400
+12234/12234 [==============================] - 1s 41us/sample - loss: 0.0016 -
+val\_loss: 0.0014
+Epoch 53/400
+12234/12234 [==============================] - 1s 41us/sample - loss: 0.0016 -
+val\_loss: 0.0011
+Epoch 54/400
+12234/12234 [==============================] - 1s 44us/sample - loss: 0.0016 -
+val\_loss: 0.0011
+Epoch 55/400
+12234/12234 [==============================] - 1s 53us/sample - loss: 0.0016 -
+val\_loss: 0.0012
+Epoch 56/400
+12234/12234 [==============================] - 1s 51us/sample - loss: 0.0016 -
+val\_loss: 0.0012
+Epoch 57/400
+12234/12234 [==============================] - 1s 53us/sample - loss: 0.0016 -
+val\_loss: 0.0011
+Epoch 58/400
+12234/12234 [==============================] - 1s 52us/sample - loss: 0.0015 -
+val\_loss: 0.0013
+Epoch 59/400
+12234/12234 [==============================] - 1s 54us/sample - loss: 0.0016 -
+val\_loss: 0.0012
+Epoch 60/400
+12234/12234 [==============================] - 1s 42us/sample - loss: 0.0015 -
+val\_loss: 0.0011
+Epoch 61/400
+12234/12234 [==============================] - 1s 48us/sample - loss: 0.0015 -
+val\_loss: 0.0010
+Epoch 62/400
+12234/12234 [==============================] - 0s 40us/sample - loss: 0.0015 -
+val\_loss: 0.0010
+Epoch 63/400
+12234/12234 [==============================] - 1s 41us/sample - loss: 0.0015 -
+val\_loss: 0.0011
+Epoch 64/400
+12234/12234 [==============================] - 1s 42us/sample - loss: 0.0015 -
+val\_loss: 0.0013
+Epoch 65/400
+12234/12234 [==============================] - 0s 41us/sample - loss: 0.0015 -
+val\_loss: 0.0010
+Epoch 66/400
+12234/12234 [==============================] - 1s 41us/sample - loss: 0.0015 -
+val\_loss: 0.0010
+Epoch 67/400
+12234/12234 [==============================] - 1s 41us/sample - loss: 0.0015 -
+val\_loss: 0.0012
+Epoch 68/400
+12234/12234 [==============================] - 1s 42us/sample - loss: 0.0016 -
+val\_loss: 0.0014
+Epoch 69/400
+12234/12234 [==============================] - 1s 43us/sample - loss: 0.0016 -
+val\_loss: 0.0010
+Epoch 70/400
+12234/12234 [==============================] - 0s 40us/sample - loss: 0.0015 -
+val\_loss: 0.0011
+Epoch 71/400
+12234/12234 [==============================] - 1s 41us/sample - loss: 0.0015 -
+val\_loss: 0.0014
+Epoch 72/400
+12234/12234 [==============================] - 1s 41us/sample - loss: 0.0016 -
+val\_loss: 0.0010
+Epoch 73/400
+12234/12234 [==============================] - 1s 55us/sample - loss: 0.0015 -
+val\_loss: 9.8471e-04
+Epoch 74/400
+12234/12234 [==============================] - 1s 55us/sample - loss: 0.0015 -
+val\_loss: 0.0011
+Epoch 75/400
+12234/12234 [==============================] - 1s 57us/sample - loss: 0.0015 -
+val\_loss: 9.6721e-04
+Epoch 76/400
+12234/12234 [==============================] - 1s 49us/sample - loss: 0.0015 -
+val\_loss: 0.0010
+Epoch 77/400
+12234/12234 [==============================] - 1s 54us/sample - loss: 0.0015 -
+val\_loss: 9.9823e-04
+Epoch 78/400
+12234/12234 [==============================] - 1s 49us/sample - loss: 0.0015 -
+val\_loss: 0.0010
+Epoch 79/400
+12234/12234 [==============================] - 1s 46us/sample - loss: 0.0016 -
+val\_loss: 0.0011
+Epoch 80/400
+12234/12234 [==============================] - 1s 42us/sample - loss: 0.0015 -
+val\_loss: 9.9099e-04
+Epoch 81/400
+12234/12234 [==============================] - 1s 44us/sample - loss: 0.0015 -
+val\_loss: 0.0010
+Epoch 82/400
+12234/12234 [==============================] - 1s 43us/sample - loss: 0.0015 -
+val\_loss: 0.0011
+Epoch 83/400
+12234/12234 [==============================] - 1s 42us/sample - loss: 0.0015 -
+val\_loss: 9.9834e-04
+Epoch 84/400
+12234/12234 [==============================] - 1s 64us/sample - loss: 0.0015 -
+val\_loss: 9.6191e-04
+Epoch 85/400
+12234/12234 [==============================] - 1s 42us/sample - loss: 0.0015 -
+val\_loss: 0.0010
+Epoch 86/400
+12234/12234 [==============================] - 1s 44us/sample - loss: 0.0015 -
+val\_loss: 0.0011
+Epoch 87/400
+12234/12234 [==============================] - 1s 41us/sample - loss: 0.0015 -
+val\_loss: 9.7191e-04
+Epoch 88/400
+12234/12234 [==============================] - 1s 44us/sample - loss: 0.0015 -
+val\_loss: 9.7572e-04
+Epoch 89/400
+12234/12234 [==============================] - 0s 41us/sample - loss: 0.0015 -
+val\_loss: 0.0012
+Epoch 90/400
+12234/12234 [==============================] - 1s 43us/sample - loss: 0.0015 -
+val\_loss: 0.0012
+Epoch 91/400
+12234/12234 [==============================] - 1s 55us/sample - loss: 0.0015 -
+val\_loss: 9.5506e-04
+Epoch 92/400
+12234/12234 [==============================] - 1s 57us/sample - loss: 0.0015 -
+val\_loss: 9.4303e-04
+Epoch 93/400
+12234/12234 [==============================] - 1s 56us/sample - loss: 0.0015 -
+val\_loss: 9.8456e-04
+Epoch 94/400
+12234/12234 [==============================] - 1s 56us/sample - loss: 0.0015 -
+val\_loss: 9.5695e-04
+Epoch 95/400
+12234/12234 [==============================] - 1s 55us/sample - loss: 0.0015 -
+val\_loss: 0.0010
+Epoch 96/400
+12234/12234 [==============================] - 1s 43us/sample - loss: 0.0015 -
+val\_loss: 9.7383e-04
+Epoch 97/400
+12234/12234 [==============================] - 1s 45us/sample - loss: 0.0015 -
+val\_loss: 0.0010
+Epoch 98/400
+12234/12234 [==============================] - 1s 43us/sample - loss: 0.0015 -
+val\_loss: 9.4741e-04
+Epoch 99/400
+12234/12234 [==============================] - 1s 42us/sample - loss: 0.0015 -
+val\_loss: 9.6006e-04
+Epoch 100/400
+12234/12234 [==============================] - 1s 43us/sample - loss: 0.0015 -
+val\_loss: 0.0010
+Epoch 101/400
+12234/12234 [==============================] - 1s 41us/sample - loss: 0.0015 -
+val\_loss: 9.5989e-04
+Epoch 102/400
+12234/12234 [==============================] - 1s 50us/sample - loss: 0.0015 -
+val\_loss: 9.6959e-04
+Epoch 103/400
+12234/12234 [==============================] - 1s 44us/sample - loss: 0.0015 -
+val\_loss: 9.6324e-04
+Epoch 104/400
+12234/12234 [==============================] - 0s 40us/sample - loss: 0.0016 -
+val\_loss: 9.4944e-04
+Epoch 105/400
+12234/12234 [==============================] - 1s 41us/sample - loss: 0.0014 -
+val\_loss: 9.5811e-04
+Epoch 106/400
+12234/12234 [==============================] - 1s 42us/sample - loss: 0.0014 -
+val\_loss: 0.0010
+Epoch 107/400
+12234/12234 [==============================] - 1s 43us/sample - loss: 0.0015 -
+val\_loss: 9.1667e-04
+Epoch 108/400
+12234/12234 [==============================] - 1s 47us/sample - loss: 0.0014 -
+val\_loss: 0.0011
+Epoch 109/400
+12234/12234 [==============================] - 1s 54us/sample - loss: 0.0015 -
+val\_loss: 9.7293e-04
+Epoch 110/400
+12234/12234 [==============================] - 1s 51us/sample - loss: 0.0014 -
+val\_loss: 9.5498e-04
+Epoch 111/400
+12234/12234 [==============================] - 1s 52us/sample - loss: 0.0014 -
+val\_loss: 9.5635e-04
+Epoch 112/400
+12234/12234 [==============================] - 1s 58us/sample - loss: 0.0015 -
+val\_loss: 9.4925e-04
+Epoch 113/400
+12234/12234 [==============================] - 1s 55us/sample - loss: 0.0015 -
+val\_loss: 0.0011
+Epoch 114/400
+12234/12234 [==============================] - 1s 48us/sample - loss: 0.0014 -
+val\_loss: 9.3379e-04
+Epoch 115/400
+12234/12234 [==============================] - 1s 48us/sample - loss: 0.0015 -
+val\_loss: 0.0014
+Epoch 116/400
+12234/12234 [==============================] - 1s 44us/sample - loss: 0.0015 -
+val\_loss: 9.9035e-04
+Epoch 117/400
+12234/12234 [==============================] - 1s 41us/sample - loss: 0.0014 -
+val\_loss: 0.0010
+Epoch 118/400
+12234/12234 [==============================] - 1s 43us/sample - loss: 0.0015 -
+val\_loss: 9.4646e-04
+Epoch 119/400
+12234/12234 [==============================] - 1s 42us/sample - loss: 0.0015 -
+val\_loss: 9.7571e-04
+Epoch 120/400
+12234/12234 [==============================] - 1s 42us/sample - loss: 0.0014 -
+val\_loss: 9.1578e-04
+Epoch 121/400
+12234/12234 [==============================] - 1s 44us/sample - loss: 0.0015 -
+val\_loss: 0.0012
+Epoch 122/400
+12234/12234 [==============================] - 1s 41us/sample - loss: 0.0014 -
+val\_loss: 9.1460e-04
+Epoch 123/400
+12234/12234 [==============================] - 1s 45us/sample - loss: 0.0015 -
+val\_loss: 0.0010
+Epoch 124/400
+12234/12234 [==============================] - 1s 41us/sample - loss: 0.0015 -
+val\_loss: 9.5794e-04
+Epoch 125/400
+12234/12234 [==============================] - 1s 46us/sample - loss: 0.0014 -
+val\_loss: 0.0010
+Epoch 126/400
+12234/12234 [==============================] - 1s 44us/sample - loss: 0.0014 -
+val\_loss: 9.2401e-04
+Epoch 127/400
+12234/12234 [==============================] - 1s 54us/sample - loss: 0.0014 -
+val\_loss: 9.5520e-04
+Epoch 128/400
+12234/12234 [==============================] - 1s 57us/sample - loss: 0.0014 -
+val\_loss: 9.2518e-04
+Epoch 129/400
+12234/12234 [==============================] - 1s 58us/sample - loss: 0.0014 -
+val\_loss: 9.1161e-04
+Epoch 130/400
+12234/12234 [==============================] - 1s 58us/sample - loss: 0.0014 -
+val\_loss: 9.1013e-04
+Epoch 131/400
+12234/12234 [==============================] - 1s 58us/sample - loss: 0.0015 -
+val\_loss: 9.9162e-04
+Epoch 132/400
+12234/12234 [==============================] - 1s 50us/sample - loss: 0.0015 -
+val\_loss: 9.1913e-04
+Epoch 133/400
+12234/12234 [==============================] - 1s 50us/sample - loss: 0.0015 -
+val\_loss: 9.8137e-04
+Epoch 134/400
+12234/12234 [==============================] - 1s 41us/sample - loss: 0.0014 -
+val\_loss: 9.1023e-04
+Epoch 135/400
+12234/12234 [==============================] - 1s 43us/sample - loss: 0.0015 -
+val\_loss: 9.3859e-04
+Epoch 136/400
+12234/12234 [==============================] - 0s 41us/sample - loss: 0.0014 -
+val\_loss: 8.9324e-04
+Epoch 137/400
+12234/12234 [==============================] - 1s 42us/sample - loss: 0.0014 -
+val\_loss: 9.4240e-04
+Epoch 138/400
+12234/12234 [==============================] - 1s 45us/sample - loss: 0.0014 -
+val\_loss: 9.0494e-04
+Epoch 139/400
+12234/12234 [==============================] - 1s 42us/sample - loss: 0.0014 -
+val\_loss: 0.0011
+Epoch 140/400
+12234/12234 [==============================] - 1s 43us/sample - loss: 0.0014 -
+val\_loss: 8.8544e-04
+Epoch 141/400
+12234/12234 [==============================] - 1s 42us/sample - loss: 0.0014 -
+val\_loss: 0.0011
+Epoch 142/400
+12234/12234 [==============================] - 1s 43us/sample - loss: 0.0014 -
+val\_loss: 8.8677e-04
+Epoch 143/400
+12234/12234 [==============================] - 1s 44us/sample - loss: 0.0014 -
+val\_loss: 0.0015
+Epoch 144/400
+12234/12234 [==============================] - 1s 44us/sample - loss: 0.0015 -
+val\_loss: 8.8369e-04
+Epoch 145/400
+12234/12234 [==============================] - 1s 54us/sample - loss: 0.0014 -
+val\_loss: 0.0015
+Epoch 146/400
+12234/12234 [==============================] - 1s 59us/sample - loss: 0.0015 -
+val\_loss: 9.7839e-04
+Epoch 147/400
+12234/12234 [==============================] - 1s 59us/sample - loss: 0.0015 -
+val\_loss: 0.0010
+Epoch 148/400
+12234/12234 [==============================] - 1s 64us/sample - loss: 0.0014 -
+val\_loss: 8.8733e-04
+Epoch 149/400
+12234/12234 [==============================] - 1s 62us/sample - loss: 0.0014 -
+val\_loss: 0.0010
+Epoch 150/400
+12234/12234 [==============================] - 1s 54us/sample - loss: 0.0014 -
+val\_loss: 9.7863e-04
+Epoch 151/400
+12234/12234 [==============================] - 1s 51us/sample - loss: 0.0014 -
+val\_loss: 9.1807e-04
+Epoch 152/400
+12234/12234 [==============================] - 1s 46us/sample - loss: 0.0014 -
+val\_loss: 8.7598e-04
+Epoch 153/400
+12234/12234 [==============================] - 1s 46us/sample - loss: 0.0014 -
+val\_loss: 9.9196e-04
+Epoch 154/400
+12234/12234 [==============================] - 1s 44us/sample - loss: 0.0014 -
+val\_loss: 0.0016
+Epoch 155/400
+12234/12234 [==============================] - 1s 45us/sample - loss: 0.0015 -
+val\_loss: 9.1860e-04
+Epoch 156/400
+12234/12234 [==============================] - 1s 44us/sample - loss: 0.0014 -
+val\_loss: 0.0011
+Epoch 157/400
+12234/12234 [==============================] - 1s 43us/sample - loss: 0.0014 -
+val\_loss: 9.0657e-04
+Epoch 158/400
+12234/12234 [==============================] - 1s 44us/sample - loss: 0.0014 -
+val\_loss: 9.2692e-04
+Epoch 159/400
+12234/12234 [==============================] - 1s 45us/sample - loss: 0.0014 -
+val\_loss: 9.2203e-04
+Epoch 160/400
+12234/12234 [==============================] - 1s 44us/sample - loss: 0.0014 -
+val\_loss: 9.2283e-04
+Epoch 161/400
+12234/12234 [==============================] - 1s 43us/sample - loss: 0.0014 -
+val\_loss: 9.1643e-04
+Epoch 162/400
+12234/12234 [==============================] - 1s 43us/sample - loss: 0.0014 -
+val\_loss: 9.0883e-04
+Epoch 163/400
+12234/12234 [==============================] - 1s 49us/sample - loss: 0.0014 -
+val\_loss: 0.0012
+Epoch 164/400
+12234/12234 [==============================] - 1s 55us/sample - loss: 0.0014 -
+val\_loss: 9.5491e-04
+Epoch 165/400
+12234/12234 [==============================] - 1s 63us/sample - loss: 0.0014 -
+val\_loss: 9.2393e-04
+Epoch 166/400
+12234/12234 [==============================] - 1s 57us/sample - loss: 0.0014 -
+val\_loss: 9.1901e-04
+Epoch 167/400
+12234/12234 [==============================] - 1s 59us/sample - loss: 0.0014 -
+val\_loss: 0.0014
+Epoch 168/400
+12234/12234 [==============================] - 1s 57us/sample - loss: 0.0015 -
+val\_loss: 8.8174e-04
+Epoch 169/400
+12234/12234 [==============================] - 1s 45us/sample - loss: 0.0014 -
+val\_loss: 8.5809e-04
+Epoch 170/400
+12234/12234 [==============================] - 1s 46us/sample - loss: 0.0014 -
+val\_loss: 9.0156e-04
+Epoch 171/400
+12234/12234 [==============================] - 1s 45us/sample - loss: 0.0014 -
+val\_loss: 0.0012
+Epoch 172/400
+12234/12234 [==============================] - 1s 45us/sample - loss: 0.0015 -
+val\_loss: 8.7756e-04
+Epoch 173/400
+12234/12234 [==============================] - 1s 54us/sample - loss: 0.0014 -
+val\_loss: 8.7620e-04
+Epoch 174/400
+12234/12234 [==============================] - 1s 55us/sample - loss: 0.0014 -
+val\_loss: 8.6786e-04
+Epoch 175/400
+12234/12234 [==============================] - 1s 61us/sample - loss: 0.0014 -
+val\_loss: 8.6015e-04
+Epoch 176/400
+12234/12234 [==============================] - 1s 46us/sample - loss: 0.0014 -
+val\_loss: 0.0010
+Epoch 177/400
+12234/12234 [==============================] - 1s 48us/sample - loss: 0.0014 -
+val\_loss: 9.9136e-04
+Epoch 178/400
+12234/12234 [==============================] - 1s 48us/sample - loss: 0.0015 -
+val\_loss: 9.1635e-04
+Epoch 179/400
+12234/12234 [==============================] - 1s 66us/sample - loss: 0.0014 -
+val\_loss: 8.6218e-04
+Epoch 180/400
+12234/12234 [==============================] - 1s 78us/sample - loss: 0.0014 -
+val\_loss: 8.4677e-04
+Epoch 181/400
+12234/12234 [==============================] - 1s 74us/sample - loss: 0.0014 -
+val\_loss: 9.0584e-04
+Epoch 182/400
+12234/12234 [==============================] - 1s 78us/sample - loss: 0.0014 -
+val\_loss: 9.9842e-04
+Epoch 183/400
+12234/12234 [==============================] - 1s 84us/sample - loss: 0.0014 -
+val\_loss: 0.0015
+Epoch 184/400
+12234/12234 [==============================] - 1s 68us/sample - loss: 0.0015 -
+val\_loss: 9.1945e-04
+Epoch 185/400
+12234/12234 [==============================] - 1s 58us/sample - loss: 0.0014 -
+val\_loss: 9.9103e-04
+Epoch 186/400
+12234/12234 [==============================] - 1s 57us/sample - loss: 0.0014 -
+val\_loss: 0.0015
+Epoch 187/400
+12234/12234 [==============================] - 1s 54us/sample - loss: 0.0014 -
+val\_loss: 8.5842e-04
+Epoch 188/400
+12234/12234 [==============================] - 1s 46us/sample - loss: 0.0014 -
+val\_loss: 8.9506e-04
+Epoch 189/400
+12234/12234 [==============================] - 1s 48us/sample - loss: 0.0014 -
+val\_loss: 8.5331e-04
+Epoch 190/400
+12234/12234 [==============================] - 1s 42us/sample - loss: 0.0014 -
+val\_loss: 8.8959e-04
+Epoch 191/400
+12234/12234 [==============================] - 1s 42us/sample - loss: 0.0014 -
+val\_loss: 8.8742e-04
+Epoch 192/400
+12234/12234 [==============================] - 1s 44us/sample - loss: 0.0014 -
+val\_loss: 9.0049e-04
+Epoch 193/400
+12234/12234 [==============================] - 1s 49us/sample - loss: 0.0014 -
+val\_loss: 9.6137e-04
+Epoch 194/400
+12234/12234 [==============================] - 1s 62us/sample - loss: 0.0014 -
+val\_loss: 9.6924e-04
+Epoch 195/400
+12234/12234 [==============================] - 1s 77us/sample - loss: 0.0014 -
+val\_loss: 8.5014e-04
+Epoch 196/400
+12234/12234 [==============================] - 1s 68us/sample - loss: 0.0014 -
+val\_loss: 0.0012
+Epoch 197/400
+12234/12234 [==============================] - 1s 61us/sample - loss: 0.0015 -
+val\_loss: 9.4546e-04
+Epoch 198/400
+12234/12234 [==============================] - 1s 57us/sample - loss: 0.0014 -
+val\_loss: 8.4731e-04
+Epoch 199/400
+12234/12234 [==============================] - 1s 49us/sample - loss: 0.0014 -
+val\_loss: 9.2903e-04
+Epoch 200/400
+12234/12234 [==============================] - 1s 48us/sample - loss: 0.0014 -
+val\_loss: 8.8370e-04
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{30}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{model}\PY{o}{.}\PY{n}{summary}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Model: "sequential\_1"
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+Layer (type)                 Output Shape              Param \#
+=================================================================
+dense\_4 (Dense)              multiple                  3480
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+dropout\_3 (Dropout)          multiple                  0
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+dense\_5 (Dense)              multiple                  27144
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+dropout\_4 (Dropout)          multiple                  0
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+dense\_6 (Dense)              multiple                  27028
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+dropout\_5 (Dropout)          multiple                  0
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+dense\_7 (Dense)              multiple                  117
+=================================================================
+Total params: 57,769
+Trainable params: 57,769
+Non-trainable params: 0
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{31}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{import} \PY{n+nn}{os}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{32}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{losses} \PY{o}{=} \PY{n}{model}\PY{o}{.}\PY{n}{history}\PY{o}{.}\PY{n}{history}
+\PY{n}{losses}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{loss}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{asarray}\PY{p}{(}\PY{n}{losses}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{loss}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+\PY{n}{losses}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{val\PYZus{}loss}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{asarray}\PY{p}{(}\PY{n}{losses}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{val\PYZus{}loss}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+\PY{n}{final\PYZus{}number\PYZus{}of\PYZus{}epochs} \PY{o}{=} \PY{n+nb}{len}\PY{p}{(}\PY{n}{losses}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{loss}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+\PY{n}{min\PYZus{}loss} \PY{o}{=} \PY{n}{losses}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{loss}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{min}\PY{p}{(}\PY{p}{)}
+\PY{n}{mean\PYZus{}loss} \PY{o}{=} \PY{n}{losses}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{loss}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{p}{)}
+\PY{n}{final\PYZus{}loss} \PY{o}{=} \PY{n}{losses}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{loss}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]}
+\PY{n}{min\PYZus{}val\PYZus{}loss} \PY{o}{=} \PY{n}{losses}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{val\PYZus{}loss}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{min}\PY{p}{(}\PY{p}{)}
+\PY{n}{mean\PYZus{}val\PYZus{}loss} \PY{o}{=} \PY{n}{losses}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{val\PYZus{}loss}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{p}{)}
+\PY{n}{final\PYZus{}val\PYZus{}loss} \PY{o}{=} \PY{n}{losses}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{val\PYZus{}loss}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]}
+
+\PY{k}{def} \PY{n+nf}{get\PYZus{}model\PYZus{}summary}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+    \PY{n}{output} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+    \PY{n}{model}\PY{o}{.}\PY{n}{summary}\PY{p}{(}\PY{n}{print\PYZus{}fn}\PY{o}{=}\PY{k}{lambda} \PY{n}{line}\PY{p}{:} \PY{n}{output}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{line}\PY{p}{)}\PY{p}{)}
+    \PY{k}{return} \PY{n+nb}{str}\PY{p}{(}\PY{n}{output}\PY{p}{)}\PY{o}{.}\PY{n}{strip}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{[]}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+
+\PY{n}{summary} \PY{o}{=} \PY{n}{get\PYZus{}model\PYZus{}summary}\PY{p}{(}\PY{p}{)}
+
+\PY{n}{record} \PY{o}{=} \PY{p}{\PYZob{}}
+    \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Epochs}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{n}{final\PYZus{}number\PYZus{}of\PYZus{}epochs}\PY{p}{,}
+    \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Batch\PYZus{}Size}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{n}{batch\PYZus{}size}\PY{p}{,}
+    \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Loss\PYZus{}Func}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{n}{loss\PYZus{}param}\PY{p}{,}
+    \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Optimizer}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{n}{optimizer\PYZus{}param}\PY{p}{,}
+    \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Early\PYZus{}Stop\PYZus{}Monitor}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{n}{stop\PYZus{}monitor}\PY{p}{,}
+    \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Early\PYZus{}Stop\PYZus{}Patience}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{n}{stop\PYZus{}patience}\PY{p}{,}
+    \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Min\PYZus{}Loss}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{n}{min\PYZus{}loss}\PY{p}{,}
+    \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Mean\PYZus{}Loss}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{n}{mean\PYZus{}loss}\PY{p}{,}
+    \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Final\PYZus{}Loss}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{n}{final\PYZus{}loss}\PY{p}{,}
+    \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Min\PYZus{}Val\PYZus{}Loss}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{n}{min\PYZus{}val\PYZus{}loss}\PY{p}{,}
+    \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Mean\PYZus{}Val\PYZus{}Loss}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{n}{mean\PYZus{}val\PYZus{}loss}\PY{p}{,}
+    \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Final\PYZus{}Val\PYZus{}Loss}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{n}{final\PYZus{}val\PYZus{}loss}\PY{p}{,}
+    \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Model}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{n}{summary}
+\PY{p}{\PYZcb{}}
+
+\PY{n}{new\PYZus{}data} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}\PY{n}{record}\PY{p}{,} \PY{n}{index}\PY{o}{=}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)}
+
+\PY{k}{if} \PY{n}{os}\PY{o}{.}\PY{n}{path}\PY{o}{.}\PY{n}{exists}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{../core/records/batting\PYZus{}results.csv}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{:}
+    \PY{n}{df\PYZus{}records} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{read\PYZus{}csv}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{../core/records/batting\PYZus{}results.csv}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+    \PY{n}{df\PYZus{}records} \PY{o}{=} \PY{n}{df\PYZus{}records}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{new\PYZus{}data}\PY{p}{)}
+\PY{k}{else}\PY{p}{:}
+    \PY{n}{df\PYZus{}records} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}\PY{n}{new\PYZus{}data}\PY{p}{)}
+    
+\PY{n}{df\PYZus{}records}\PY{o}{.}\PY{n}{to\PYZus{}csv}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{../core/records/batting\PYZus{}results.csv}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{index}\PY{o}{=}\PY{k+kc}{False}\PY{p}{,} \PY{n}{float\PYZus{}format}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+si}{\PYZpc{}g}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    Model Evaluation
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{33}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{losses} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}\PY{n}{model}\PY{o}{.}\PY{n}{history}\PY{o}{.}\PY{n}{history}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{34}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{losses}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{34}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+<matplotlib.axes.\_subplots.AxesSubplot at 0x145a367d0>
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_27_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{61}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{predictions} \PY{o}{=} \PY{n}{model}\PY{o}{.}\PY{n}{predict}\PY{p}{(}\PY{n}{X\PYZus{}test}\PY{p}{)}
+\PY{n}{predictions} \PY{o}{=} \PY{p}{[}\PY{n}{pred} \PY{k}{for} \PY{n}{sublist} \PY{o+ow}{in} \PY{n}{predictions} \PY{k}{for} \PY{n}{pred} \PY{o+ow}{in} \PY{n}{sublist}\PY{p}{]}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{29}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{test\PYZus{}player\PYZus{}ratings} \PY{o}{=} \PY{n+nb}{dict}\PY{p}{(}\PY{n+nb}{zip}\PY{p}{(}\PY{n}{X\PYZus{}test\PYZus{}keys}\PY{p}{,} \PY{n}{predictions}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{30}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{player\PYZus{}key} \PY{o}{=} \PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{retroID}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{31}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{player\PYZus{}key}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{31}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+0        aardd001
+1        aaroh101
+2        aarot101
+3        aased001
+4        abada001
+           {\ldots}
+15288    zupcb001
+15289    zupof101
+15290    zuveg101
+15291    zuvep001
+15292    zycht001
+Name: retroID, Length: 15293, dtype: object
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{32}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{results} \PY{o}{=} \PY{n}{model}\PY{o}{.}\PY{n}{predict}\PY{p}{(}\PY{n}{tensor}\PY{o}{.}\PY{n}{to\PYZus{}numpy}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{33}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n+nb}{len}\PY{p}{(}\PY{n}{results}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{33}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+15293
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{34}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{results}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{34}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+0.11595928
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{35}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Batting}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{shape}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{35}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+(15293,)
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{36}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{results}\PY{o}{.}\PY{n}{shape}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{36}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+(15293, 1)
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{37}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{results} \PY{o}{=} \PY{p}{[}\PY{n}{pred} \PY{k}{for} \PY{n}{sublist} \PY{o+ow}{in} \PY{n}{results} \PY{k}{for} \PY{n}{pred} \PY{o+ow}{in} \PY{n}{sublist}\PY{p}{]}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{38}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{diff} \PY{o}{=} \PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Batting}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{\PYZhy{}} \PY{n}{results}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{39}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{diff}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{39}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+<matplotlib.axes.\_subplots.AxesSubplot at 0x145c29890>
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_39_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{40}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{diff}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{40}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+0.005629653826018003
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+
+\end{Verbatim}
+\end{tcolorbox}
+
+
+    % Add a bibliography block to the postdoc
+    
+    
+    
+\end{document}

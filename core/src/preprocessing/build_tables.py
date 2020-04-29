@@ -33,6 +33,7 @@ catchers.drop(columns=['pos_1B', 'pos_2B', 'pos_3B', 'pos_C',
 unwanted_pitching_columns = ['W', 'L', 'G', 'GS', 'SV']
 pitchers = df_pitch.drop(columns=unwanted_pitching_columns)
 pitchers['K%'] = pitchers['SO'] / pitchers['BFP']
+pitchers['K%'].fillna(0, inplace=True)
 fielders = pd.merge(df_field, df, how='inner', on=['retroID'])
 fielders = fielders[~fielders['retroID'].isin(pitchers['retroID'])]
 fielders = fielders[~(fielders['retroID'].isin(

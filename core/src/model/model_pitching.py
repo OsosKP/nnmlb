@@ -1,23 +1,21 @@
 import os
-from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import MinMaxScaler
-from tensorflow.keras.callbacks import EarlyStopping
+from sklearn.model_selection import train_test_split
 from tensorflow.keras import regularizers
+from tensorflow.keras.callbacks import EarlyStopping
 from tensorflow.keras.layers import Dense, Dropout
 from tensorflow.keras.models import Sequential
 import pandas as pd
 import numpy as np
 
-df = pd.read_csv('core/output/batters.csv')
+df = pd.read_csv('../core/output/pitchers.csv')
 indexer = df.reset_index()[['index', 'retroID']].to_dict()['retroID']
-y = df['Batting'].values
-to_drop = ['debutYear', 'finalYear', 'G', '1B', 'AB', 'RBI', 'wOBA']
-df.drop(columns=to_drop, inplace=True)
+to_drop = ['IPouts', 'BFP', 'R']
+df = df.drop(columns=to_drop)
+y = df['Pitching'].values
 
-
-X = df.drop(columns=['Batting']).values
-y = df[['retroID', 'Batting']].values
-
+X = df.drop(columns=['Pitching']).values
+y = df[['retroID', 'Pitching']].values
 X_train, X_test, y_train, y_test = train_test_split(
     X, y, test_size=0.2, random_state=101)
 X_train_keys = np.asarray([x[0] for x in X_train])
@@ -28,7 +26,6 @@ y_train_keys = np.asarray([y[0] for y in y_train])
 y_train = np.asarray([y[1] for y in y_train])
 y_test_keys = np.asarray([y[0] for y in y_test])
 y_test = np.asarray([y[1] for y in y_test])
-
 scaler = MinMaxScaler()
 X_train = scaler.fit_transform(X_train)
 X_test = scaler.transform(X_test)
@@ -38,40 +35,30 @@ def to_tensor_input(player):
     return scaler.transform(player.values.reshape(-1, 29))[0]
 
 
-tensor = df.drop(columns=['retroID', 'Batting'])
+tensor = df.drop(columns=['retroID', 'Pitching'])
 player_tensor_inputs = tensor.apply(
     lambda player: to_tensor_input(player), axis=1)
-
 tensor = pd.DataFrame(player_tensor_inputs.values.tolist())
-
-tensor.to_csv('core/tensors/t_batting.csv', index=False, float_format='%g')
-
-epochs = 400
-batch_size = 64
+tensor.to_csv('../core/tensors/t_pitching.csv', index=False, float_format='%g')
+epochs = 4000
+batch_size = 32
 loss_param = 'mse'
 optimizer_param = 'adam'
 stop_monitor = 'val_loss'
-stop_patience = 20
+stop_patience = 50
+early_stop = EarlyStopping(monitor=stop_monitor, patience=stop_patience)
 
 model = Sequential()
 
-model.add(Dense(116, activation='relu',
-                kernel_regularizer=regularizers.l2(0.0001)))
+model.add(Dense(29, activation='relu', kernel_regularizer=regularizers.l2(0.0001)))
 model.add(Dropout(0.5))
 
-model.add(Dense(232, activation='relu',
-                kernel_regularizer=regularizers.l2(0.0001)))
-model.add(Dropout(0.5))
-
-model.add(Dense(116, activation='relu',
-                kernel_regularizer=regularizers.l2(0.0001)))
+model.add(Dense(58, activation='relu', kernel_regularizer=regularizers.l2(0.0001)))
 model.add(Dropout(0.5))
 
 model.add(Dense(units=1, activation='sigmoid'))
 
 model.compile(loss=loss_param, optimizer=optimizer_param)
-
-early_stop = EarlyStopping(monitor=stop_monitor, patience=stop_patience)
 
 results = model.fit(x=X_train, y=y_train,
                     epochs=epochs,
@@ -118,13 +105,14 @@ record = {
 
 new_data = pd.DataFrame(record, index=[0])
 
-if os.path.exists('../core/records/batting_results.csv'):
-    df_records = pd.read_csv('../core/records/batting_results.csv')
-    df_records.append(new_data)
+if os.path.exists('../core/records/pitching_results.csv'):
+    df_records = pd.read_csv('../core/records/pitching_results.csv')
+    df_records = df_records.append(new_data)
 else:
     df_records = pd.DataFrame(new_data)
 
-df_records.to_csv('core/records/batting_results.csv',
+df_records.to_csv('../core/records/pitching_results.csv',
                   index=False, float_format='%g')
 
-model.save('core/models/model_batting.h5')
+
+model.save('core/models/model_pitching.h5')

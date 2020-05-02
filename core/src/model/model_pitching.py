@@ -8,7 +8,7 @@ from tensorflow.keras.models import Sequential
 import pandas as pd
 import numpy as np
 
-df = pd.read_csv('../core/output/pitchers.csv')
+df = pd.read_csv('core/output/pitchers.csv')
 indexer = df.reset_index()[['index', 'retroID']].to_dict()['retroID']
 to_drop = ['IPouts', 'BFP', 'R']
 df = df.drop(columns=to_drop)
@@ -105,13 +105,13 @@ record = {
 
 new_data = pd.DataFrame(record, index=[0])
 
-if os.path.exists('../core/records/pitching_results.csv'):
-    df_records = pd.read_csv('../core/records/pitching_results.csv')
+if os.path.exists('core/records/pitching_results.csv'):
+    df_records = pd.read_csv('core/records/pitching_results.csv')
     df_records = df_records.append(new_data)
 else:
     df_records = pd.DataFrame(new_data)
 
-df_records.to_csv('../core/records/pitching_results.csv',
+df_records.to_csv('core/records/pitching_results.csv',
                   index=False, float_format='%g')
 
 

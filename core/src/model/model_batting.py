@@ -118,8 +118,8 @@ record = {
 
 new_data = pd.DataFrame(record, index=[0])
 
-if os.path.exists('../core/records/batting_results.csv'):
-    df_records = pd.read_csv('../core/records/batting_results.csv')
+if os.path.exists('core/records/batting_results.csv'):
+    df_records = pd.read_csv('core/records/batting_results.csv')
     df_records.append(new_data)
 else:
     df_records = pd.DataFrame(new_data)

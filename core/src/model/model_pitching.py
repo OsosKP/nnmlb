@@ -7,10 +7,11 @@ from tensorflow.keras.layers import Dense, Dropout
 from tensorflow.keras.models import Sequential
 import pandas as pd
 import numpy as np
+from tensors import to_tensor_input
 
 df = pd.read_csv('core/output/pitchers.csv')
 indexer = df.reset_index()[['index', 'retroID']].to_dict()['retroID']
-to_drop = ['IPouts', 'BFP', 'R']
+to_drop = ['debutYear', 'finalYear', 'IPouts', 'BFP', 'R']
 df = df.drop(columns=to_drop)
 y = df['Pitching'].values
 
@@ -31,13 +32,13 @@ X_train = scaler.fit_transform(X_train)
 X_test = scaler.transform(X_test)
 
 
-def to_tensor_input(player):
-    return scaler.transform(player.values.reshape(-1, 29))[0]
+# def to_tensor_input(player):
+#     return scaler.transform(player.values.reshape(-1, 42))[0]
 
 
 tensor = df.drop(columns=['retroID', 'Pitching'])
 player_tensor_inputs = tensor.apply(
-    lambda player: to_tensor_input(player), axis=1)
+    lambda player: to_tensor_input(scaler, player, 'pitching'), axis=1)
 tensor = pd.DataFrame(player_tensor_inputs.values.tolist())
 tensor.to_csv('../core/tensors/t_pitching.csv', index=False, float_format='%g')
 epochs = 4000
@@ -50,7 +51,8 @@ early_stop = EarlyStopping(monitor=stop_monitor, patience=stop_patience)
 
 model = Sequential()
 
-model.add(Dense(29, activation='relu', kernel_regularizer=regularizers.l2(0.0001)))
+model.add(Dense(29, activation='relu', kernel_regularizer=regularizers.l2(
+    0.0001), input_shape=X_train.shape[1:]))
 model.add(Dropout(0.5))
 
 model.add(Dense(58, activation='relu', kernel_regularizer=regularizers.l2(0.0001)))
@@ -116,3 +118,7 @@ df_records.to_csv('core/records/pitching_results.csv',
 
 
 model.save('core/models/model_pitching.h5')
+
+
+def pitching_scaler():
+    return scaler

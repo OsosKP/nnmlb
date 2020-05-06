@@ -7,6 +7,7 @@ from tensorflow.keras.layers import Dense, Dropout
 from tensorflow.keras.models import Sequential
 import pandas as pd
 import numpy as np
+from tensors import to_tensor_input
 
 df = pd.read_csv('core/output/batters.csv')
 indexer = df.reset_index()[['index', 'retroID']].to_dict()['retroID']
@@ -34,13 +35,13 @@ X_train = scaler.fit_transform(X_train)
 X_test = scaler.transform(X_test)
 
 
-def to_tensor_input(player):
-    return scaler.transform(player.values.reshape(-1, 29))[0]
+# def to_tensor_input(player):
+#     return scaler.transform(player.values.reshape(-1, 29))[0]
 
 
 tensor = df.drop(columns=['retroID', 'Batting'])
 player_tensor_inputs = tensor.apply(
-    lambda player: to_tensor_input(player), axis=1)
+    lambda player: to_tensor_input(scaler, player, 'batting'), axis=1)
 
 tensor = pd.DataFrame(player_tensor_inputs.values.tolist())
 
@@ -55,8 +56,9 @@ stop_patience = 20
 
 model = Sequential()
 
-model.add(Dense(116, activation='relu',
-                kernel_regularizer=regularizers.l2(0.0001)))
+model.add(Dense(116, activation='relu', kernel_regularizer=regularizers.l2(
+    0.0001), input_shape=X_train.shape[1:]))
+
 model.add(Dropout(0.5))
 
 model.add(Dense(232, activation='relu',

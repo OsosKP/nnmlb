@@ -17,8 +17,9 @@ dropped_meta_cols = ['POS', 'bats', 'throws']
 df_meta.drop(columns=dropped_meta_cols, inplace=True)
 
 df_meta = df_meta.join([df_meta_pos, df_meta_bats, df_meta_throws])
-df_meta.drop(columns=['throws_S', 'throws_R', 'bats_R'], inplace=True)
-
+df_meta['seasons'] = df_meta['finalYear'] - df_meta['debutYear']
+df_meta.drop(columns=['throws_S', 'throws_R', 'bats_R',
+                      'debutYear', 'finalYear'], inplace=True)
 scaler = MinMaxScaler()
 
 df_meta[['weight', 'height']] = scaler.fit_transform(

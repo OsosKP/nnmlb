@@ -7,12 +7,13 @@ from tensorflow.keras.layers import Dense, Dropout
 from tensorflow.keras.models import Sequential
 import pandas as pd
 import numpy as np
-from tensors import to_tensor_input
+import joblib
+import model.tensors as tensors
 
 df = pd.read_csv('core/output/batters.csv')
 indexer = df.reset_index()[['index', 'retroID']].to_dict()['retroID']
 y = df['Batting'].values
-to_drop = ['debutYear', 'finalYear', 'G', '1B', 'AB', 'RBI', 'wOBA']
+to_drop = ['G', '1B', 'AB', 'RBI', 'wOBA']
 df.drop(columns=to_drop, inplace=True)
 
 
@@ -34,6 +35,7 @@ scaler = MinMaxScaler()
 X_train = scaler.fit_transform(X_train)
 X_test = scaler.transform(X_test)
 
+joblib.dump(scaler, 'core/models/batting_scaler.save')
 
 # def to_tensor_input(player):
 #     return scaler.transform(player.values.reshape(-1, 29))[0]
@@ -41,7 +43,7 @@ X_test = scaler.transform(X_test)
 
 tensor = df.drop(columns=['retroID', 'Batting'])
 player_tensor_inputs = tensor.apply(
-    lambda player: to_tensor_input(scaler, player, 'batting'), axis=1)
+    lambda player: tensors.to_tensor_input(scaler, player, 'batting'), axis=1)
 
 tensor = pd.DataFrame(player_tensor_inputs.values.tolist())
 

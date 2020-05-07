@@ -1,11 +1,17 @@
 import pandas as pd
+from joblib import load
 pd.options.mode.chained_assignment = None  # default='warn'
 
 batters = pd.read_csv('core/output/batters.csv')
 batter_years = pd.read_csv('core/output/batting.csv')
 pitchers = pd.read_csv('core/output/pitchers.csv')
 pitcher_years = pd.read_csv('core/output/pitching.csv')
-scalers = {}
+bat_scaler = load('../core/models/batting_scaler.save')
+pitch_scaler = load('../core/models/pitching_scaler.save')
+scalers = {
+    'batting': bat_scaler,
+    'pitching': pitch_scaler
+}
 career_features = {
     'batting': [
         'G', 'AB', 'PA', 'R', 'H', '1B', '2B', '3B',

@@ -1,5 +1,6 @@
 import os
 from sklearn.preprocessing import MinMaxScaler
+from sklearn.externals import joblib
 from sklearn.model_selection import train_test_split
 from tensorflow.keras import regularizers
 from tensorflow.keras.callbacks import EarlyStopping
@@ -7,11 +8,11 @@ from tensorflow.keras.layers import Dense, Dropout
 from tensorflow.keras.models import Sequential
 import pandas as pd
 import numpy as np
-from tensors import to_tensor_input
+import model.tensors as tensors
 
 df = pd.read_csv('core/output/pitchers.csv')
 indexer = df.reset_index()[['index', 'retroID']].to_dict()['retroID']
-to_drop = ['debutYear', 'finalYear', 'IPouts', 'BFP', 'R']
+to_drop = ['IPouts', 'BFP', 'R']
 df = df.drop(columns=to_drop)
 y = df['Pitching'].values
 
@@ -31,6 +32,7 @@ scaler = MinMaxScaler()
 X_train = scaler.fit_transform(X_train)
 X_test = scaler.transform(X_test)
 
+joblib.dump(scaler, 'core/models/pitching_scaler.save')
 
 # def to_tensor_input(player):
 #     return scaler.transform(player.values.reshape(-1, 42))[0]
@@ -38,9 +40,9 @@ X_test = scaler.transform(X_test)
 
 tensor = df.drop(columns=['retroID', 'Pitching'])
 player_tensor_inputs = tensor.apply(
-    lambda player: to_tensor_input(scaler, player, 'pitching'), axis=1)
+    lambda player: tensors.to_tensor_input(scaler, player, 'pitching'), axis=1)
 tensor = pd.DataFrame(player_tensor_inputs.values.tolist())
-tensor.to_csv('../core/tensors/t_pitching.csv', index=False, float_format='%g')
+tensor.to_csv('core/tensors/t_pitching.csv', index=False, float_format='%g')
 epochs = 4000
 batch_size = 32
 loss_param = 'mse'

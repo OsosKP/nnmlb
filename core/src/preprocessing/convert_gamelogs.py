@@ -25,6 +25,7 @@ for year in range(1919, 2020):
     df = df.drop(columns=['date', 'day_night'])
     df['visit_team'] = df['visit_team'].apply(get_team)
     df['home_team'] = df['home_team'].apply(get_team)
+    df['home_win'] = (df['home_score'] > df['visit_score']).astype(int)
     if os.path.exists(file_path + '.TXT'):
         os.remove(file_path + '.TXT')
     df.to_csv(file_path + '.csv', index=False)

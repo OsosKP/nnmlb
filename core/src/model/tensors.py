@@ -6,8 +6,8 @@ batters = pd.read_csv('core/output/batters.csv')
 batter_years = pd.read_csv('core/output/batting.csv')
 pitchers = pd.read_csv('core/output/pitchers.csv')
 pitcher_years = pd.read_csv('core/output/pitching.csv')
-bat_scaler = load('../core/models/batting_scaler.save')
-pitch_scaler = load('../core/models/pitching_scaler.save')
+bat_scaler = load('core/models/batting_scaler.save')
+pitch_scaler = load('core/models/pitching_scaler.save')
 scalers = {
     'batting': bat_scaler,
     'pitching': pitch_scaler

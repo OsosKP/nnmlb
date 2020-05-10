@@ -8,7 +8,7 @@ from tensorflow.keras.models import Sequential
 import pandas as pd
 import numpy as np
 import joblib
-import model.tensors as tensors
+from .tensors import to_tensor_input
 
 df = pd.read_csv('core/output/batters.csv')
 indexer = df.reset_index()[['index', 'retroID']].to_dict()['retroID']
@@ -37,13 +37,9 @@ X_test = scaler.transform(X_test)
 
 joblib.dump(scaler, 'core/models/batting_scaler.save')
 
-# def to_tensor_input(player):
-#     return scaler.transform(player.values.reshape(-1, 29))[0]
-
-
 tensor = df.drop(columns=['retroID', 'Batting'])
 player_tensor_inputs = tensor.apply(
-    lambda player: tensors.to_tensor_input(scaler, player, 'batting'), axis=1)
+    lambda player: to_tensor_input(scaler, player, 'batting'), axis=1)
 
 tensor = pd.DataFrame(player_tensor_inputs.values.tolist())
 

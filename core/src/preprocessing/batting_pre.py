@@ -43,6 +43,9 @@ pa_list = df.apply(find_pa, axis=1)
 df.insert(loc=6, column='PA', value=pa_list)
 df['teamID'] = df['teamID'].apply(get_team)
 df = df.sort_index()
+
+df.loc[df['retroID'] == 'castd101'] = 'castd002'
+
 df.to_csv('core/output/batting.csv', index=False, float_format='%g')
 df.reset_index(inplace=True)
 

@@ -1,3 +1,9 @@
+"""
+The information used here was obtained free of
+     charge from and is copyrighted by Retrosheet.  Interested
+     parties may contact Retrosheet at "www.retrosheet.org".
+"""
+
 import os
 import pandas as pd
 from utils.team_dict import get_team

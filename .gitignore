@@ -5,6 +5,7 @@ data/
 __pycache__/
 .idea/
 *.csv
+*.pages
 
 # These either will never be used or will be in the future, but are ignored for now
 source/scripts/repository.py
